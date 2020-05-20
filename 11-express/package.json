@@ -1,0 +1,12 @@
+{
+    "name": "sh",
+    "main": "server.js",
+    "author": "shirin",
+    "version": "1.0.0",
+    "dependencies": {
+        "express" : "latest",
+        "mongoose": "latest",
+        "helmet"  : "latest",
+        "body-parser": "latest"
+    }
+}
