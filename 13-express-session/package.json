@@ -1,0 +1,16 @@
+{
+    "name": "sh",
+    "main": "foo.js",
+    "author": "shirin",
+    "version": "1.0.0",
+    "dependencies": {
+        "body-parser": "latest",
+        "express": "latest",
+        "express-load": "^1.1.16",
+        "express-session": "^1.17.1",
+        "helmet": "latest",
+        "mongoose": "latest",
+        "morgan": "^1.10.0",
+        "parsel": "^0.3.0"
+    }
+}
