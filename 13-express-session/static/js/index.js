@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
     $('#login').click(function (e) { 
         e.preventDefault();
@@ -31,4 +33,14 @@ $(document).ready(function () {
 
 
 
+    //!session
+    $.post("/getInfo",function (data) {    
+        $('#auth').html(JSON.stringify(data));
+        console.log(data);        
+        if (data) {
+          $('#user').html(data["username"]);
+        }
+      });
+    
+    
 });

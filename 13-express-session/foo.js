@@ -3,7 +3,7 @@ let app     = express();
 let bodyParser = require("body-parser");  // !
 let path = require('path');
 let morgan = require('morgan') // will show us  req  same as console.log()
-//let session = require('express-session')  // sesion ~ cookie
+let session = require('express-session')  // sesion ~ cookie
 
 
 
@@ -15,12 +15,12 @@ app.use("/static" , express.static(path.join(__dirname + "/static")))  //! serch
 app.use(bodyParser.json());  
 app.use(bodyParser.urlencoded({extended:true})); //!middleware for parsing bodies from URL.
 app.use(morgan('common'));
-/*   app.use(session({
-  secret: 'keyboard cat',
+ app.use(session({
+  secret: 'secret', //!
  resave: false,
   saveUninitialized: true,
   //cookie: { secure: true }
-}))  */
+}))  
 
 
 //? 1 user send us username and pass(was wir user eingeben)
@@ -32,7 +32,7 @@ let users = {
 
 //if get
  app.get("/",function(req,resp,next){ 
-   console.log(req.session);   
+   //console.log(req.session);   
 resp.sendFile(__dirname +"/static/index.html")
 });
 app.get("/login" , function(req,resp,next){
@@ -45,6 +45,10 @@ app.get("/login" , function(req,resp,next){
  app.post("/",function(req,resp,next){
     console.log("post");    
 });
+
+
+
+
 //!if post kame for login
 app.post("/login" , function(req,resp,next){
   console.log("post kame for loging ");  
@@ -55,7 +59,9 @@ app.post("/login" , function(req,resp,next){
     if (req.body["username"] == user) {
           //if user is true check pass
         if (req.body["password"] == users[user]) {
+          req.session.auth = {username : req.body["username"]}  //or = blabla  //! musst be first for resp
           resp.json({status : true , msg : "you are login"})
+          console.log(req.session.auth);          
           return;   // if ist true return dont go to the next
         }else{
           resp.json({status : false , msg : "your pass fehlt"})
@@ -82,7 +88,10 @@ app.post("/sinup" , function(req , resp , next){
   }
 })
 
-
+//! **************session
+app.post("/getInfo" , function(req,resp,next){
+  resp.json(req.session.auth);
+});
 
 
 //show them
