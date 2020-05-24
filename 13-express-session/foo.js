@@ -30,6 +30,14 @@ let users = {
   ali : "12345"
 }
 
+//? session-2
+let comments = {
+  "shirin" : ["first comment from shirin" , "second comment"],
+  "dariush" : ["first comment from dariush"]
+}
+
+
+
 //if get
  app.get("/",function(req,resp,next){ 
    //console.log(req.session);   
@@ -71,8 +79,14 @@ app.post("/login" , function(req,resp,next){
   }
   resp.json({status : false , msg : "user is fals"})  //! at the end if user and pass is false
 });
- 
 
+ //!-2 logout
+app.post("/logout" , function (req,resp,next) {
+  req.session.auth = {};
+   //delete req.session.auth ;
+   resp.json({status : true , msg : "out !"})
+
+  })
 
 //!! ******signUp
 
@@ -88,10 +102,31 @@ app.post("/sinup" , function(req , resp , next){
   }
 })
 
-//! **************session
+//! **************session-1
 app.post("/getInfo" , function(req,resp,next){
   resp.json(req.session.auth);
 });
+
+//!-2  $.post("/submitComment", {},
+app.post("/submitComment" , function (req,resp,next) {
+  if (req.session.auth.username != undefined) {  //check  
+     if (comments[req.session.auth.username] != undefined) {  //check is there any comment
+      comments[req.session.auth.username].push(req.body.msg)
+     }else{
+      comments[req.session.auth.username] = [req.body.msg]
+     }
+        console.log(comments);
+    resp.json({status : true , msg : "comment are save !"})  // show msg to user 
+        
+  }else{
+    resp.json({status : false , msg : "you was not login!"})  // show msg to user 
+  }
+  })
+
+//!-2   $.post("/getComment", {},
+app.post("/getComment" , function (req,resp,next) {
+  resp.json(comments)
+  })
 
 
 //show them

@@ -1,6 +1,12 @@
 
 
 $(document).ready(function () {
+
+  let isAuth = false //! session-2
+
+
+
+
     $('#login').click(function (e) { 
         e.preventDefault();
       //  console.log({username :$("#username").val() , password :$("#password").val() });
@@ -33,14 +39,62 @@ $(document).ready(function () {
 
 
 
-    //!session
+    //!session-1
     $.post("/getInfo",function (data) {    
         $('#auth').html(JSON.stringify(data));
         console.log(data);        
         if (data) {
           $('#user').html(data["username"]);
+          isAuth = true ;  // just by lernen
         }
       });
     
+
+      //!session-2 comment
+      $('#submitComment').click(function (e) { 
+        e.preventDefault();
+        if (isAuth) {
+
+          $.post("/submitComment", {msg : $('#msg').val()},
+          function (data, textStatus, jqXHR) {
+           console.log(data);
+            $('#info').append("<p>" + data["status"] + "||" + data["msg"]+ "</p>");
+            getComment();  //get all comment and bring to me
+          });
+    
+        }else{
+          alert(":|")
+        }
+
+        
+      });
+
+
+//!-2  logout
+      $('#logOut').click(function (e) { 
+        e.preventDefault();
+       
+        $.post("/logout", 
+          function (data, textStatus, jqXHR) {
+            $('#info').append("<p>" + data["status"] + "||" + data["msg"]+ "</p>");           
+          },
+          "dataType"
+        );
+      });
+
+      //-2  ger other comment that client are send
+      let getComment = function(){
+      
+          $.post("/getComment", {},function (data) { 
+              for(let attr in data){
+                //attr > key value        &    data[attr] > all comments from user
+                  $('#commentBox').append(`<p> ${attr} msg :  ${data[attr].toString()} </p>`);
+              }
+           }  );
+
+      
+      
+      }
+
     
 });
