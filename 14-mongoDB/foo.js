@@ -8,18 +8,17 @@ let mongoos = require('mongoose')
 
 
  mongoos.connect('mongodb://localhost/nodejscourse')
- let db = mongoos.connection ;
+ let db = mongoos.connection ;  //1 we will check we are connect or not
 
-
-let humanSchemo = new mongoos.Schema({
-  name     :String ,
-  age      : Number,
+let userSchema = new mongoos.Schema({
+  email     :String ,
   username : String ,
+  password : String
 
 })
 
-let humanModel = mongoos.model("Human" ,humanSchemo)
-let shirin = new humanModel({
+let userModel = mongoos.model("User" ,userSchema)
+/* let shirin = new humanModel({
   name : 'shirin',
   age :20 ,
   username : "shirinvalizadeh"
@@ -33,23 +32,25 @@ shirin.save(function (err , shirin) {
   console.log(shirin);
   
   })
+ */
 
 
-
-//! to che mongoDB
- db.on('err' , function () { 
+//!1 to check mongoDB is connect
+ db.on('err' , function () {   
    console.log("is not connect");   
   });
   db.on('connected' , function () {
-    console.log("you are connect to mongodb");    
-    humanModel.findOne({username:"shirinvalizadeh"} , function (err , user) {
+   console.log("you are connect to mongodb");    
+/*     humanModel.findOne({username:"shirinvalizadeh"} , function (err , user) {
       if (err) {
         console.log(err);
       }
       console.log("find" , user);
       
-      })
+      }) */
     })
+
+
 
 //go and search in                 folder
 //app.use("/static",express.static(__dirname + "static"))
@@ -66,11 +67,11 @@ app.use(morgan('common'));
 
 
 //? 1 user send us username and pass(was wir user eingeben)
-let users = {
+/*  let users = {
   shirin :"123",
   dariush : "1234" , 
   ali : "12345"
-}
+}  */
 
 //? session-2
 let comments = {
@@ -131,9 +132,36 @@ app.post("/logout" , function (req,resp,next) {
   })
 
 //!! ******signUp
-
+ //??? ===================use mongodb------------------------
 app.post("/sinup" , function(req , resp , next){
-  if ( req.body.username.length && req.body.password.length >=4) {
+  let formData = req.body ;    //????????????
+  if (formData.username.lenght && formData.password.lenght){
+      if (formData.password.lenght >=4) {
+        userModel.find({username : formData.username} , function (err,users) { 
+          if (err) {
+            console.log(err);
+          }else if(users.lenght){
+              resp.json ({status : false , msg : "choos another user"})
+          }else{
+            let newUser = new userModel({
+              email : formData.email , 
+              password : formData.password ,
+              username : formData.username
+            });
+            console.log(newUser);
+            newUser.save(); //!!!
+            resp.json({status : true , msg : "done !!"})
+          
+          }
+         })
+      }else{
+    resp.json({status : false , msg : "password muss be more than 4 charachter"})
+
+      }
+  }else{
+    resp.json({status : false , msg : "u dont have username or password"})
+  }
+/*   if ( req.body.username.length && req.body.password.length >=4) {
     users[req.body.username] = req.body.password ;
     resp.json({status : true , msg : "done !" +  users[req.body.username]})  // show msg to user 
     console.log(users);
@@ -141,7 +169,7 @@ app.post("/sinup" , function(req , resp , next){
   }else{
     resp.json({status : false , msg : "failed !"})  // show msg to user 
 
-  }
+  } */
 })
 
 //! **************session-1
