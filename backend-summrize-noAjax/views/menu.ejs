@@ -33,18 +33,24 @@
                 </div>
             </div>
             <div class="row">
+           <% meals.forEach (meal => {%> 
                 <div class="col-xl-6 col-md-6 col-lg-6">
                     <div class="single_delicious d-flex align-items-center">
+            
                         <div class="thumb">
-                            <img src="/img/burger/1.png" alt="">
+                            <img src="<%= meal.imgUrl%>" alt="">
                         </div>
                         <div class="info">
-                            <h3>Beefy Burgers</h3>
-                            <p>Great way to make your business appear trust and relevant.</p>
-                            <span>$5</span>
+                            <h3> <%= meal.title %> </h3>
+                            <p> <%= meal.description %> </p>
+                            <span> <%= meal.price %> </span>
                         </div>
+                    
                     </div>
                 </div>
+    <%})%>
+
+                <!--  i delet them and make it dynamicly  line 36-51
                 <div class="col-md-6 col-lg-6">
                     <div class="single_delicious d-flex align-items-center">
                         <div class="thumb">
@@ -155,7 +161,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

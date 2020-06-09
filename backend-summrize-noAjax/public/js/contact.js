@@ -55,7 +55,8 @@ $(document).ready(function(){
                 }
             },
             submitHandler: function(form) {
-                $(form).ajaxSubmit({
+                form.submit()
+/*                 $(form).ajaxSubmit({
                     type:"POST",
                     data: $(form).serialize(),
                     url:"/contact",
@@ -77,7 +78,7 @@ $(document).ready(function(){
 		                	$('#error').modal('show');
                         })
                     }
-                })
+                }) */
             }
         })
     })

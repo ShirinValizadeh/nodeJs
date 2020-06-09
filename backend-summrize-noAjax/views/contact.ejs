@@ -112,7 +112,7 @@
                         <h2 class="contact-title">Get in Touch</h2>
                     </div>
                     <div class="col-lg-8">
-                        <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                        <form class="form-contact contact_form" action="/contact1" method="post" id="contactForm" novalidate="novalidate">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
@@ -259,7 +259,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     
         <!-- JS here -->
 <%- include('./partials/htmlJs') %> 
-    
+    <!-- no AJAX -->
+    <% if(sent == 2){%>
+        <script>
+            $("#success").modal('show')
+        </script>
+    <%}else if(sent == 3) {%>
+        <script>
+            $("#error").modal('show')
+        </script>
+    <%}%>
+    <!-- no AJAX  end -->
     </body>
     
     </html>
