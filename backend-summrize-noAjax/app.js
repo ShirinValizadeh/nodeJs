@@ -1,16 +1,19 @@
 const express = require('express');
 const app = express();
 const emailSender = require('./mudules/emailSender');
+let fs = require('fs');  //1
+const adminRaute = require('./routs/adminRaute')//!2  
+const fileUpload = require('express-fileupload')
 
 
 // use public files
 app.use(express.static('./public'));
-
-
 //use express urlencoder to get post
-app.use(express.urlencoded({extended:true}));
-
-
+app.use(express.urlencoded({extended:false}));
+ // set limit for file
+app.use(fileUpload({   
+  limits: { fileSize: 50 * 1024 * 1024 },  
+}));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -20,103 +23,22 @@ app.set('views', __dirname + '/views');
 app.get('/', (req, res) => {
    res.render('main')
 });
-
-
-// ------'/menu'-----make menu as a obj and set them dynamicly
-let meals = [
-   {
-       title: "Beefy Burgers",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/1.png",
-       price: 5
-   },
-   {
-       title: "Burger Boys",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/2.png",
-       price: 5
-   },
-   {
-       title: "Burger Bizz",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/3.png",
-       price: 5
-   },
-   {
-       title: "Crackles Burger",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/4.png",
-       price: 5
-   },
-   {
-       title: "Bull Burgers",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/5.png",
-       price: 5
-   },
-   {
-       title: "Rocket Burgers",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/6.png",
-       price: 5
-   },
-   {
-       title: "Smokin Burger",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/7.png",
-       price: 5
-   },
-   {
-       title: "Delish Burger",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/8.png",
-       price: 5
-   },
-   {
-       title: "Crackles Burger",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/4.png",
-       price: 5
-   },
-   {
-       title: "Bull Burgers",
-       description: "Great way to make your business appear trust and relevant.",
-       imgUrl: "/img/burger/5.png",
-       price: 5
-   }
-]
-app.get('/menu', (req, res) => {
-    res.render('menu' ,{meals:meals})
- });
-
-
- app.get('/contact', (req, res) => {
-    res.render('contact',{sent:1})    // no ajax need to add  ,{sent:1}
+app.get('/contact', (req, res) => {
+    res.render('contact',{sent:1})    // noajax need to add  ,{sent:1}
  }); 
 
 
-//--------'/admin/admeal'---------------
-app.get('/admin/addmeal', (req, res) => {
-   res.render('adminAddMeal' ,{meals:meals})
-});
-app.post('/admin/addmeal', (req, res) => {
-   const mealTitle = req.body.mealTitle
-   const mealPrice = req.body.mealPrice
-   const mealDescription = req.body.mealDescription
+// //!readFile from json  1------'/menu'-----
+const jsonText = fs.readFileSync(__dirname + '/meals.json');  //or2
+const obj = JSON.parse(jsonText)  // convert to object to show them 
 
-//? beacuse of validation
-   let obj = {     
-         title: mealTitle,
-         description: mealDescription,
-         imgUrl: "/img/burger/1.png",
-         price: mealPrice  
-   }
-   meals.push(obj)
-   //res.render('adminAddMeal' ,{meals:meals})
-   res.redirect('/admin/addmeal')
-});
+app.use('/admin',adminRaute.adminBurgerRouter(obj)) ; //!1.3 
 
 
+
+app.get('/menu', (req, res) => {
+    res.render('menu' ,{meals:obj})
+ });
 
 
 
