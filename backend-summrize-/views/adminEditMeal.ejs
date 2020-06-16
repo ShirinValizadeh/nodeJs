@@ -17,9 +17,10 @@
 
     <!-- bradcam_area_start -->
     <div class="bradcam_area breadcam_bg overlay">
-        <h3>DELETE Meal</h3>
+        <h3>EDIT Meal</h3>
     </div>
     <!-- bradcam_area_end -->
+
 
     <!-- best_burgers_area_start  -->
     <div class="best_burgers_area">
@@ -33,19 +34,26 @@
                 </div>
             </div>
             <div class="row">
-                <% meals.forEach ((meal , idx )=> {%>
+                <% meals.forEach ((meal , idx) => {%>
                 <div class="col-xl-6 col-md-6 col-lg-6">
                     <div class="single_delicious d-flex align-items-center">
 
                         <div class="thumb">
-                            <img src="<%= meal.imgUrl%>" alt="">
+                            <img src="<%= meal.imgUrl%>" alt="" class="mealimgTag">
                         </div>
                         <div class="info">
-                            <h3> <%= meal.title %> </h3>
-                            <p> <%= meal.description %> </p>
-                            <span>$<%= meal.price %> </span>
-                            <a href="#" class="btn btn-danger mealDeletBtn" mealid="<%= idx%>">Delete</a>
-                        </div>          
+                            <input type="text" name="" class="mealTitle" value="<%= meal.title %> ">
+                            <textarea class="mealDescription" cols="30" rows="5"><%= meal.description %></textarea>
+                            <span>$<input style="width: 100px;" type="number" class="mealPrice"
+                                    value="<%= meal.price %>"></span>
+
+                            <input type="file" name="mealimg" class="form-control-file" id="mealimgfileEdit"
+                                accept="image/x-png,image/gif,image/jpeg">
+
+                            <a href="#" class="btn btn-success mt-2 editBtn" mealid='<%= idx%>'>save</a>
+
+                        </div>
+
                     </div>
                 </div>
                 <%})%>
@@ -167,21 +175,21 @@
     </div>
     <!-- best_burgers_area_end  -->
 
-    <!-- add dish form  -->
-        <!-- deleted -->
-    <!-- add dish form end -->
 
+    <!-- add dish form  -->
+    <!-- i make it (adminAddMeal) -->
+    <!-- delete form -->
+    <!-- add dish form end -->
     <!-- features_room_startt -->
     <!-- delet -->
     <!-- features_room_end -->
-
     <!-- testimonial_area_start  -->
     <!-- deleted -->
     <!-- testimonial_area_ned  -->
-
     <!-- instragram_area_start -->
     <!-- deleted -->
     <!-- instragram_area_end -->
+
 
     <!-- footer_start  -->
     <footer class="footer">
@@ -275,29 +283,99 @@
     </footer>
     <!-- footer_end  -->
     <%- include('partials/htmlJs')%>
-<script>
-    $('.mealDeletBtn').click(function (e) { 
-        e.preventDefault();
-        //$(this).attr('mealid') // it will show us the index(idx)
-       if(confirm("are you sure you want to delete this meal") )   // confirm ~ alert
-       {
-           $.ajax({
-               type: "POST",
-               url: "/admin/deletmeal",
-               data: { mealid:$(this).attr('mealid') },
-               //dataType: "json",
-               success: function (response) {
-                   //alert('deleted')
-                   //console.log(e.target);//e.target that means which i click                   
-                   $(e.target).parent().parent().parent().remove()  
-               },
-               error:function(error){
-                   console.log(error);
-               }
-           });
-       }
-    });
-</script>
+
+    <script>
+        const editBtn = document.querySelectorAll('.editBtn')
+        editBtn.forEach(element => {
+            element.addEventListener('click', (e) => {
+                e.preventDefault();
+                // alert(e.target.getAttribute('mealid'))   //mealid  will show us the indexof in line 48             
+                const mealid = e.target.getAttribute('mealid')
+                const mealTitle = e.target.parentElement.querySelector('.mealTitle').value
+                const mealDescription = e.target.parentElement.querySelector('.mealDescription')
+                    .value
+                const mealPrice = e.target.parentElement.querySelector('.mealPrice').value
+                const imgFile = e.target.parentElement.querySelector('.form-control-file').files[0]
+
+
+                //! build the formdata 3   here you can send all type af data img txt or ...
+                const fd = new FormData();
+                fd.append('mealid', mealid)
+                fd.append('mealTitle', mealTitle)
+                fd.append('mealDescription', mealDescription)
+                fd.append('mealPrice', mealPrice)
+                if (imgFile) { // check if user chose a img
+                    fd.append('imgFile', imgFile)
+                }
+                postData_FormData('/admin/editmeal', fd).then(response => {
+                    console.log(response);
+                    if (response.status == 200) {
+                        response.json().then(jsonData => {
+                            console.log(jsonData);
+                            // change img without refreshing the page  >  new Date().getTime() > refreshing with same name
+                            e.target.parentElement.parentElement.querySelector('.mealimgTag').src = jsonData + '?' + new Date().getTime()
+
+                        })
+                    }
+                })
+                /////////you can not send file here//////////////////or 3///////////////////
+                // send data using fetch    no ajax 1.1 
+                /*                 postData('/admin/editmeal', {  
+                                        mealid: mealid,
+                                        mealTitle: mealTitle,
+                                        mealDescription: mealDescription,
+                                        mealPrice: mealPrice
+                                    })
+                                    .then(data => {
+                                        console.log(data); // JSON data parsed by `response.json()` call
+                                    });  */
+                //////////////////////////end 3///////////////////
+                /* 
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/admin/editmeal",
+                                        data: {
+                                        mealid,
+                                        mealTitle,
+                                        mealDescription,
+                                        mealPrice,
+                                        mealimgTag
+                                        },
+                                        success: function (response) {
+                                            
+                                        }
+                                    }); */
+            })
+        });
+        //////////////////////////////////////////
+        //   send data as json using fetch: 1.2
+        function postData(url = '', data = {}) {
+            return fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                    //'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify(data)
+            }).then(response => response)
+        }
+        //////////////////////////////////////////
+        //! send FILE as formdata using fetch  or Ajax
+        function postData_FormData(url = '', formdata = {}) {
+            return fetch(url, {
+                method: 'POST',
+                body: formdata // body data type must match "Content-Type" header             
+            }).then(response => response)
+            // return response.json(); // parses JSON response into native JavaScript objects
+        }
+    </script>
+
+
 </body>
 
 </html>

@@ -17,10 +17,9 @@
 
     <!-- bradcam_area_start -->
     <div class="bradcam_area breadcam_bg overlay">
-        <h3>EDIT Meal</h3>
+        <h3>DELETE Meal</h3>
     </div>
     <!-- bradcam_area_end -->
-
 
     <!-- best_burgers_area_start  -->
     <div class="best_burgers_area">
@@ -34,7 +33,7 @@
                 </div>
             </div>
             <div class="row">
-                <% meals.forEach ((meal , idx) => {%>
+                <% meals.forEach ((meal , idx )=> {%>
                 <div class="col-xl-6 col-md-6 col-lg-6">
                     <div class="single_delicious d-flex align-items-center">
 
@@ -42,13 +41,11 @@
                             <img src="<%= meal.imgUrl%>" alt="">
                         </div>
                         <div class="info">
-                            <input type="text" name="" class="mealTitle" value="<%= meal.title %> ">
-                            <textarea class="mealDescription" cols="30" rows="5"><%= meal.description %></textarea>
-                            <span>$<input style="width: 100px;" type="number" class="mealPrice"
-                                    value="<%= meal.price %>"></span>
-                            <a href="#" class="btn btn-success mt-2 editBtn" mealid='<%= idx%>'>save</a>
-                        </div>
-
+                            <h3> <%= meal.title %> </h3>
+                            <p> <%= meal.description %> </p>
+                            <span>$<%= meal.price %> </span>
+                            <a href="#" class="btn btn-danger mealDeletBtn" mealid="<%= idx%>">Delete</a>
+                        </div>          
                     </div>
                 </div>
                 <%})%>
@@ -170,36 +167,21 @@
     </div>
     <!-- best_burgers_area_end  -->
 
-
-
     <!-- add dish form  -->
-    <!-- i make it (adminAddMeal) -->
-    <!-- delete form -->
+        <!-- deleted -->
     <!-- add dish form end -->
-
-
 
     <!-- features_room_startt -->
     <!-- delet -->
     <!-- features_room_end -->
 
-
-
-
     <!-- testimonial_area_start  -->
     <!-- deleted -->
     <!-- testimonial_area_ned  -->
 
-
-
     <!-- instragram_area_start -->
     <!-- deleted -->
     <!-- instragram_area_end -->
-
-
-
-
-
 
     <!-- footer_start  -->
     <footer class="footer">
@@ -293,68 +275,29 @@
     </footer>
     <!-- footer_end  -->
     <%- include('partials/htmlJs')%>
-
-    <script>
-        const editBtn = document.querySelectorAll('.editBtn')
-        editBtn.forEach(element => {
-            element.addEventListener('click', (e) => {
-                e.preventDefault();
-                // alert(e.target.getAttribute('mealid'))   //mealid  will show us the indexof in line 48             
-                const mealid = e.target.getAttribute('mealid')
-                const mealTitle = e.target.parentElement.querySelector('.mealTitle').value
-                const mealDescription = e.target.parentElement.querySelector('.mealDescription')
-                    .value
-                const mealPrice = e.target.parentElement.querySelector('.mealPrice').value
-
-/*    send data using fetch    no ajax 1.1 
-                postData('/admin/editmeal', {
-                        mealid: mealid,
-                        mealTitle: mealTitle,
-                        mealDescription: mealDescription,
-                        mealPrice: mealPrice
-                    })
-                    .then(data => {
-                        console.log(data); // JSON data parsed by `response.json()` call
-                    }); */
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/admin/editmeal",
-                        data: {
-                        mealid,
-                        mealTitle,
-                        mealDescription,
-                        mealPrice
-                        },
-                        success: function (response) {
-                            
-                        }
-                    });
-            })
-        });
-/* 
-        // Example POST method implementation: 1.2
-       function postData(url = '', data = {}) {
-            // Default options are marked with *
-         return fetch(url, {
-                method: 'POST',
-                mode: 'cors',  
-                cache: 'no-cache', 
-                credentials: 'same-origin', 
-                headers: {
-                    //'Content-Type': 'application/json'
-                     'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-               body: JSON.stringify(data) // body data type must match "Content-Type" header
-             
-            }).then(Response => Response.json())
-           // return response.json(); // parses JSON response into native JavaScript objects
-        } */
-    </script>
-
-
+<script>
+    $('.mealDeletBtn').click(function (e) { 
+        e.preventDefault();
+        //$(this).attr('mealid') // it will show us the index(idx)
+       if(confirm("are you sure you want to delete this meal") )   // confirm ~ alert
+       {
+           $.ajax({
+               type: "POST",
+               url: "/admin/deletmeal",
+               data: { mealid:$(this).attr('mealid') },
+               //dataType: "json",
+               success: function (response) {
+                   //alert('deleted')
+                   console.log(e.target);//e.target that means which i click                   
+                   $(e.target).parent().parent().parent().remove()  
+               },
+               error:function(error){
+                   console.log(error);
+               }
+           });
+       }
+    });
+</script>
 </body>
 
 </html>

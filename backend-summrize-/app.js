@@ -8,8 +8,9 @@ const fileUpload = require('express-fileupload')
 
 // use public files
 app.use(express.static('./public'));
-//use express urlencoder to get post
+//use express urlencoder to get post that mean you cann change data
 app.use(express.urlencoded({extended:false}));
+app.use(express.json())  //! check if req is a json will convert to obj  wenn({extended:false})
  // set limit for file
 app.use(fileUpload({   
   limits: { fileSize: 50 * 1024 * 1024 },  
@@ -41,12 +42,6 @@ app.get('/menu', (req, res) => {
  });
 
 
-
-
-
-
-
-
 //!! =========to get data from  FORM   //( use AJAX in frontend)
  app.post('/contact', (req, res) => {
    console.log(req.body)
@@ -60,13 +55,9 @@ app.get('/menu', (req, res) => {
        res.sendStatus(200)  // res.json('1');   callback
      }else{
       res.sendStatus(500)
-     }
-      
+     }     
    });
    }
-
-
-
  });
  //!==== no AJAX
  app.post('/contact1', (req, res) => {
@@ -83,14 +74,9 @@ app.get('/menu', (req, res) => {
      }else{
       //res.sendStatus(500)
       res.render('contact' , {sent:3})  //!
-
-     }
-      
+     }      
    });
    }
-
-
-
  });
 
 
