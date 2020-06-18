@@ -3,6 +3,27 @@ const fs = require('fs')
 
 function adminBurgerRouter(obj) {
     const adminRoute = express.Router()
+    //!  5 build a midelware to check the session for all routes in /admin , /admin/blabla
+    adminRoute.use((req , res,next)=> {
+        if (req.session.user) {//!  login to admin muss be login first
+            next()
+        }else{
+            res.redirect('/')
+        }
+    })
+
+
+// render main file 
+    adminRoute.get('/', (req, res) => { 
+        console.log(req.session.user); 
+       /* or 5  if (req.session.user) {  just /admin
+            res.render('admin')
+        } else{
+            res.redirect('/login')
+        }    */
+        res.render('admin')
+    });
+
 
     adminRoute.get('/addmeal', (req, res) => {
         // const jsonText = fs.readFileSync(__dirname + '/meals.json')
@@ -75,32 +96,43 @@ function adminBurgerRouter(obj) {
 
         }
     })
+//--------------------------------------------------------
+    adminRoute.get('/admin' , (req,res) =>{
+        res.render('admin');
+    })
+    adminRoute.get('/login' , (req,res) =>{
+        res.render('login');
+    })
 
-
+  
     //----------------------------------------------------------------   
     adminRoute.post('/addmeal', (req, res) => {
+    
         const mealTitle = req.body.mealTitle
         const mealPrice = req.body.mealPrice
         const mealDescription = req.body.mealDescription
-
-        // chees burger 
-        // chees_burger_1.jpeg
-        // false cases
-        // number 0
-        // string empty string
-        // object undefined
-        // datatype null 
+        const mealDetails = req.body.mealDetails
+        
+     
+     
         if (mealTitle && mealPrice && mealDescription && req.files) {
-            const mealImg = req.files.mealimg
+           //! 10 or  check if mealTitle exist
+            const foundMachmeal = obj.find(meal =>meal.title == mealTitle)
+            if (foundMachmeal) {
+                res.send("this mealTitle exict");
+            }else{
+                const mealImg = req.files.mealimg
             //mealImg.name // blabla.jpeg
             // get image extenstion
             let ext = mealImg.name.substr(mealImg.name.lastIndexOf('.'))
-            mealImg.mv('./public/uploadedFiles/' + mealTitle.replace(/ /g, '_') + (obj.length + 1) + ext).then(() => {
+            mealImg.mv('./public/uploadedFiles/' + mealTitle.replace(/ /g, '_') + (obj.length ) + ext).then(() => {
+
                 let newmeal = {
                     title: mealTitle,
                     description: mealDescription,
-                    imgUrl: '/uploadedFiles/' + mealTitle.replace(/ /g, '_') + obj.length + ext,
-                    price: mealPrice
+                    imgUrl: '/uploadedFiles/' + mealTitle.replace(/ /g, '_') + (obj.length) + ext,
+                    price: mealPrice,
+                    details: mealDetails
                 }
                 obj.push(newmeal)
                 fs.writeFileSync('./meals.json', JSON.stringify(obj))
@@ -110,12 +142,27 @@ function adminBurgerRouter(obj) {
             }).catch(error => {
                 res.send(error.message);
             })
+            }
+            
 
         } else {
             res.send("meal data is not complete");
         }
+    
+
 
     });
+    //! 10.1 or  check if mealTitle exist   using fetch
+    adminRoute.post('/checkMealName' , (req,res)=>{
+      //  console.log(req.body);
+        const foundedMeal = obj.find(meal => meal.title == req.body.mealtitle )
+        if (foundedMeal) {
+            res.json('exist')
+        }else{
+            res.json('not exist')
+        }
+    })
+
     return adminRoute
 }
 

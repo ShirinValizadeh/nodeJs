@@ -1,0 +1,212 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <title>menu</title>
+    <%- include('./partials/htmlHead') %>
+</head>
+
+<body>
+    <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+    <!-- header-start -->
+    <%- include('./partials/header' , {active: 'menu'}) %>
+    <!-- header-end -->
+
+    <!-- bradcam_area_start -->
+    <div class="bradcam_area breadcam_bg overlay">
+        <h3>LOGIN</h3>
+    </div>
+    <!-- bradcam_area_end -->
+
+    <!-- best_burgers_area_start  -->
+   <!-- delet -->
+    <!-- best_burgers_area_end  -->
+
+
+
+    <!-- add dish form  -->
+    <!-- i make it -->
+    <!-- add dish form end -->
+<div class="container">
+ <form class="mt-5 mb-5 col-md-12" action="/login" method="POST">
+     <img class="mb-4" src="/img/logo.png" alt="" width="72" height="72">
+     <h1>Please sign in</h1>
+    <div class="form-group">
+      <label for="username">User Name</label>
+      <input type="text" class="form-control" name="username" id="username" aria-describedby="emailHelp" placeholder="UserName">
+      <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    </div>
+    <div class="checkbox mb-3">
+        <label for="">
+        <input type="checkbox" value="remember-me"  name="rememberme"> Remember
+        <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+    </label>
+      </div> 
+    <button type="submit" id="login" class="btn btn-primary submitBtn">Sign in</button>
+  </form>
+
+</div>
+    <!-- features_room_startt -->
+    <!-- delet -->
+    <!-- features_room_end -->
+
+
+
+
+    <!-- testimonial_area_start  -->
+    <!-- deleted -->
+    <!-- testimonial_area_ned  -->
+
+
+
+    <!-- instragram_area_start -->
+    <!-- deleted -->
+    <!-- instragram_area_end -->
+
+
+
+    <!-- footer_start  -->
+    <footer class="footer">
+        <div class="footer_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-md-6 col-lg-4">
+                        <div class="footer_widget text-center ">
+                            <h3 class="footer_title pos_margin">
+                                New York
+                            </h3>
+                            <p>5th flora, 700/D kings road, <br>
+                                green lane New York-1782 <br>
+                                <a href="#">info@burger.com</a></p>
+                            <a class="number" href="#">+10 378 483 6782</a>
+
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-6 col-lg-4">
+                        <div class="footer_widget text-center ">
+                            <h3 class="footer_title pos_margin">
+                                California
+                            </h3>
+                            <p>5th flora, 700/D kings road, <br>
+                                green lane New York-1782 <br>
+                                <a href="#">info@burger.com</a></p>
+                            <a class="number" href="#">+10 378 483 6782</a>
+
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-md-12 col-lg-4">
+                        <div class="footer_widget">
+                            <h3 class="footer_title">
+                                Stay Connected
+                            </h3>
+                            <form action="#" class="newsletter_form">
+                                <input type="text" placeholder="Enter your mail">
+                                <button type="submit">Sign Up</button>
+                            </form>
+                            <p class="newsletter_text">Stay connect with us to get exclusive offer!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-4">
+                        <div class="socail_links text-center">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="ti-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="ti-twitter-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="ti-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right_text">
+            <div class="container">
+                <div class="footer_border"></div>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <p class="copy_right text-center">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer_end  -->
+    <%- include('partials/htmlJs')%>
+
+<script>
+    document.querySelector('.submitBtn').addEventListener('click' , e =>{
+        e.preventDefault();
+        const username =document.querySelector('#username').value
+        const password =document.querySelector('#password').value
+        postData('/login' , {
+            username , 
+            password
+        }).then(data=>{
+            console.log(data);
+            if (data == 'exist') {
+                window.location = '/admin'
+            }else{
+                // or modal
+                alert('pass or user are false')
+            }
+        })
+
+    })
+   //   send data as json using fetch
+   function postData(url = '', data = {}) {
+            return fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json'
+                    //'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify(data)
+            }).then(response => response.json())
+        }
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

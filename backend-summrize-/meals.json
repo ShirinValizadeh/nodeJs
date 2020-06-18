@@ -1,46 +1,70 @@
 [{
-    "title": "Bull Burgers   ",
+    "title": "Bull Burgers    ",
     "description": "Great way to make your business appear trust and relevant.1010",
-    "imgUrl": "/img/burger/7.png",
+    "imgUrl": "/uploadedFiles/Bull_Burgers____0.png",
     "price": "20"
 }, {
-    "title": "Rocket Burgers  ",
+    "title": "Rocket Burgers   ",
     "description": "Great way to make your business appear trust and relevant.",
-    "imgUrl": "/img/burger/5.png",
+    "imgUrl": "/uploadedFiles/Rocket_Burgers___1.png",
     "price": "10"
 }, {
-    "title": "Smokin Burger",
+    "title": "Smokin Burger ",
     "description": "Great way to make your business appear trust and relevant.",
-    "imgUrl": "/img/burger/7.png",
-    "price": 5
+    "imgUrl": "/uploadedFiles/Smokin_Burger_2.png",
+    "price": "5"
 }, {
-    "title": "Delish Burger",
+    "title": "Delish Burger ",
     "description": "Great way to make your business appear trust and relevant.",
-    "imgUrl": "/img/burger/8.png",
-    "price": 5
+    "imgUrl": "/uploadedFiles/Delish_Burger_3.png",
+    "price": "5"
 }, {
-    "title": "Crackles Burger",
+    "title": "Crackles Burger ",
     "description": "Great way to make your business appear trust and relevant.",
-    "imgUrl": "/img/burger/4.png",
-    "price": 5
+    "imgUrl": "/uploadedFiles/Crackles_Burger_4.png",
+    "price": "5"
 }, {
-    "title": "Bull Burgers",
+    "title": "Bull Burgers ",
     "description": "Great way to make your business appear trust and relevant.",
-    "imgUrl": "/img/burger/5.png",
-    "price": 5
+    "imgUrl": "/uploadedFiles/Bull_Burgers_5.png",
+    "price": "5"
 }, {
-    "title": "Crackles Burger",
+    "title": "Crackles Burger ",
     "description": "hgg",
-    "imgUrl": "/img/burger/1.png",
+    "imgUrl": "/uploadedFiles/Crackles_Burger_6.jpg",
     "price": "2"
 }, {
-    "title": "new1",
+    "title": "new1 ",
     "description": "jhjhj",
-    "imgUrl": "/img/burger/1.png",
+    "imgUrl": "/uploadedFiles/new1_7.png",
     "price": "8"
 }, {
     "title": "star",
     "description": "star",
     "imgUrl": "/uploadedFiles/star81.png",
     "price": "1"
+}, {
+    "title": "new foto",
+    "description": "hi ",
+    "imgUrl": "/uploadedFiles/new_foto10.png",
+    "price": "2",
+    "details": "<p>Hello, World!</p>"
+}, {
+    "title": "try ",
+    "description": "try it",
+    "imgUrl": "/uploadedFiles/try_11.jpg",
+    "price": "3",
+    "details": "<p>Hello, World! i am there</p>"
+}, {
+    "title": "kabab",
+    "description": "lecker",
+    "imgUrl": "/uploadedFiles/kabab11.jpeg",
+    "price": "10",
+    "details": "<p><img src=\"https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fwww.yachtnorthernsun.com%2Fmenu%2F&amp;psig=AOvVaw1t-cOQl9h_1XCIEqhiNvMq&amp;ust=1592559816303000&amp;source=images&amp;cd=vfe&amp;ved=0CAIQjRxqFwoTCOCRxuOJi-oCFQAAAAAdAAAAABAD\" alt=\"\" />Hello, World!<img src=\"https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fwww.yachtnorthernsun.com%2Fmenu%2F&amp;psig=AOvVaw1t-cOQl9h_1XCIEqhiNvMq&amp;ust=1592559816303000&amp;source=images&amp;cd=vfe&amp;ved=0CAIQjRxqFwoTCOCRxuOJi-oCFQAAAAAdAAAAABAD\" alt=\"food\" width=\"394\" height=\"165\" /><img src=\"https://www.google.com/url?sa=i&amp;url=https%3A%2F%2Ftechnext.github.io%2Fpato%2F&amp;psig=AOvVaw1t-cOQl9h_1XCIEqhiNvMq&amp;ust=1592559816303000&amp;source=images&amp;cd=vfe&amp;ved=0CAIQjRxqFwoTCOCRxuOJi-oCFQAAAAAdAAAAABAI\" alt=\"\" width=\"100\" height=\"100\" /><img src=\"https://www.google.com/url?sa=i&amp;url=http%3A%2F%2Fclipart-library.com%2Frainbow-food-cliparts.html&amp;psig=AOvVaw3ln2utV7teKzQCG-gbhIpu&amp;ust=1592559956605000&amp;source=images&amp;cd=vfe&amp;ved=0CAIQjRxqFwoTCIC5m6iKi-oCFQAAAAAdAAAAABAD\" alt=\"\" width=\"100\" height=\"100\" /><img src=\"https://pngimg.com/uploads/kebab/kebab_PNG26.png\" alt=\"\" width=\"200\" height=\"121\" /></p>"
+}, {
+    "title": "kebab2",
+    "description": "sehr cool",
+    "imgUrl": "/uploadedFiles/kebab212.jpeg",
+    "price": "20",
+    "details": "<p><strong>contents:</strong></p>\r\n<ol>\r\n<li>bread&nbsp;</li>\r\n<li>kebab</li>\r\n<li>eggs</li>\r\n<li><img src=\"https://cdn.imgbin.com/2/22/11/imgbin-vegetables-beef-kebabs-gTr66P516X4Bey5qpHD7u4P4G.jpg\" alt=\"\" width=\"100\" height=\"82\" /></li>\r\n</ol>"
 }]
