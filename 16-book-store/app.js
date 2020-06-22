@@ -1,0 +1,79 @@
+const express = require('express');
+const app = express();
+let fs = require('fs');  //1
+const fileUpload = require('express-fileupload')
+const session = require('express-session')
+const cookie = require('cookie-parser')
+const dataModules = require('./modules/dataModule')
+
+
+
+
+//creat session object options
+const sessionOptions = {
+    secret : 'bookStore',
+    cookie :{}   
+  }
+ 
+app.use(session(sessionOptions)) //use a session  
+app.use(cookie()) // use cookie-parser
+app.use(express.static('./public'));
+app.use(express.urlencoded({extended:false}));
+app.use(express.json())  //! check if req is a json will convert to obj  wenn({extended:false})
+ // set limit for file
+ app.use(fileUpload({   
+    limits: { fileSize: 50 * 1024 * 1024 },  
+  }));
+
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+
+
+const userJsonText = fs.readFileSync(__dirname + '/users.json');  
+const users = JSON.parse(userJsonText)  // convert to object to show them 
+//*================== render main file 
+app.get('/', (req, res) => {   
+    res.render('main')
+ });
+ 
+//*================render register file
+ app.get('/register', (req, res) => {
+    res.render('register')
+ });
+
+//post app.post
+
+app.post('/register', (req, res) => {
+    console.log(req.body);
+    
+  const password = req.body.password 
+   const email = req.body.email.trim()
+    const password_confirmation = req.body.password_confirmation
+   
+    if (email && passwor && password== password_confirmation) {
+
+        dataModules.registerUser(email , password).then(()=>{
+            res.json(1) //user register success
+        }).catch(error =>{
+            console.log(error);
+            if (error == "exist") {
+                res.json(3)  // user exist
+            }else{
+                res.json(4) // server error
+            }
+        })
+
+    }else{
+        res.json(2) // user register not seccess
+    }
+
+
+
+});
+
+
+
+ app.listen(3000, () => {
+    console.log('App listening on port 3000!');
+});
