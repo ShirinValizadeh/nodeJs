@@ -29,7 +29,9 @@ function adminBurgerRouter(obj) {
         // const jsonText = fs.readFileSync(__dirname + '/meals.json')
         // const obj = JSON.parse(jsonText)
         res.render('adminAddMeal', {
-            meals: obj
+            meals: obj,
+            check:true
+
         })
     });
     //------------------------------------------------------------------------
@@ -119,7 +121,8 @@ function adminBurgerRouter(obj) {
            //! 10 or  check if mealTitle exist
             const foundMachmeal = obj.find(meal =>meal.title == mealTitle)
             if (foundMachmeal) {
-                res.send("this mealTitle exict");
+               // res.send("this mealTitle exict");
+               res.render('admonAddMeal' , {check:false})
             }else{
                 const mealImg = req.files.mealimg
             //mealImg.name // blabla.jpeg
