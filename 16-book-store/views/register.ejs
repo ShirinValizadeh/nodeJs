@@ -232,21 +232,39 @@
                 }).then(response => {
                     if (response.status == 200) {
                         response.json().then(data => {
-                            console.log(data);
+                            //console.log(data);  the number are from app.js line 57
+                            switch (data) {
+                                case 1:
+                            showModal(false , "success" , "login is done...")                                    
+                                    break;
+                                    case 2:
+                            showModal(true , "faild" , "miss pass or user")                                   
+                                    break;
+                                    case 3:
+                            showModal(true , "email is register" , "this email is already registerd")                                   
+                                    break;
+                                    case 4:
+                            showModal(true , "server error" , "pls contact server admin")                                 
+                                    break;       
 
+                                default:
+                            showModal(true , "server error" , "pls contact server admin")                                 
+                                    break;
+                            }
                         }).catch(error =>{
                             console.log(error);
-                             //1
-                            showModal(true , "catch error (server side)" , error.message)
+                             //1  this error wenn is problem by response.json() > return object
+                            showModal(true , "catch error (server side)" , "please contact admin")
 
                         })
                     }
                 }).catch(error =>{
                     console.log(error);
-                    //1
-                    showModal(true , "catch error (server side)" , error.message)
+                             //1  this error wenn is problem by response.json()
+                    showModal(true , "catch error (server side)" , "pls contact ")
                 })
             }else{// 1 CALL FUNCTION showModal
+                  // this error wenn is problem by response.json()
                 showModal(true , "TITLE missing " , "CONTENT you missing")
             }
 
@@ -256,8 +274,8 @@
         //-----1------- if we have error will call this function---
         function showModal(error , title , content) {
             const modal = document.querySelector('#resultModal')
-            const modal_header = document.querySelector('.modal-header')
-            const modal_body = document.querySelector('.modal-body')
+            const modal_header = modal.querySelector('.modal-header')
+            const modal_body = modal.querySelector('.modal-body')
 
             if (error) {
                 modal_header.classList.add('bg-danger')

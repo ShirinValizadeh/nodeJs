@@ -1,0 +1,14 @@
+{
+    "books":[
+
+        {
+            "id":1,
+            "title":"book title",
+            "description": "book description",
+            "imgs" : ["blabla/blabla/bla.jpeg" ,"blabla/blabla/bla.jpeg"],
+            "pdfUrl":"blabla/bla.pdf",
+            "userId" : 1
+        }
+    ],
+    "newid":2
+}

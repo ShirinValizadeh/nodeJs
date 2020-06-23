@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload')
 const session = require('express-session')
 const cookie = require('cookie-parser')
 const dataModules = require('./modules/dataModule')
-
+const adminRouter = require('./routes/adminRouter')
 
 
 
@@ -24,14 +24,15 @@ app.use(express.json())  //! check if req is a json will convert to obj  wenn({e
  app.use(fileUpload({   
     limits: { fileSize: 50 * 1024 * 1024 },  
   }));
-
+  //add the usage of any router all after others middeleware
+  //app.use(bla()) >> is middleware
+app.use('/admin',adminRouter)
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 
-const userJsonText = fs.readFileSync(__dirname + '/users.json');  
-const users = JSON.parse(userJsonText)  // convert to object to show them 
+
 //*================== render main file 
 app.get('/', (req, res) => {   
     res.render('main')
@@ -51,8 +52,8 @@ app.post('/register', (req, res) => {
    const email = req.body.email.trim()
     const password_confirmation = req.body.password_confirmation
    
-    if (email && passwor && password== password_confirmation) {
-
+    if (email && password && password == password_confirmation) {
+        
         dataModules.registerUser(email , password).then(()=>{
             res.json(1) //user register success
         }).catch(error =>{
@@ -67,10 +68,8 @@ app.post('/register', (req, res) => {
     }else{
         res.json(2) // user register not seccess
     }
-
-
-
 });
+
 
 
 
