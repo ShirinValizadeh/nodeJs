@@ -32,4 +32,53 @@ function registerUser(email,password) {
 
 
 
-  module.exports = {registerUser}
+function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
+
+
+  return new Promise ((resolve,reject)=>{
+    // array will contain the url of imges to be save in the books.json
+    const imgArr = []
+    bookImg.forEach((img , idx) => {
+      let ext = img.name.substr(img.name.lastIndexOf('.'))
+      // set new img name without space
+      let newName = bookTitle.trim().replace(/ /g, '_' )+ '_'+ 1+ '_' + idx + ext
+      img.mv('./public/uploadedFiles/' + newName)
+      imgArr.push('/uploadedFiles/' + newName)
+    });
+    //pdf dont need ext is olways '.pdf'
+    //set new name for pdfname
+    let pdfName = bookTitle.trim().replace(/ /g , '_')+'_' + 1 + '.pdf'
+    //mv pdf file with new name to uploadedfile
+    bookPdf.mv('./public/uploadedFiles/' + pdfName) 
+    //!set the pdfUrl that gonna be saved in the json file
+    let pdfNewUrl = '/uploadedFiles/' + pdfName
+
+    //read books.json
+    const booksJson =fs.readFileSync('./books.json' )
+    //convert them
+    const booksObj = JSON.parse(booksJson)
+    //set them 
+    booksObj.books.push({
+      id:booksObj.newid,
+      title: bookTitle.trim(),
+      description:bookDescription,
+      imgs : imgArr ,
+      pdfUrl :pdfNewUrl,
+      userId : 1
+    })
+    //increase the newId 
+    booksObj.newid ++
+    //save the booksObj to books.json
+    fs.writeFileSync('./books.json' , JSON.stringify(booksObj))
+    resolve()
+  })
+
+
+
+
+
+}
+
+
+
+  module.exports = {registerUser,addBook}

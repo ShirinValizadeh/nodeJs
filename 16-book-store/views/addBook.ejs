@@ -16,7 +16,8 @@
                 <div class="row">
                     <div class="col-md-3"><a href="#" class="web-url">www.bookstore.com</a></div>
                     <div class="col-md-6">
-                        <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5></div>
+                        <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5>
+                    </div>
                     <div class="col-md-3">
                         <span class="ph-number">Call : 800 1234 5678</span>
                     </div>
@@ -27,7 +28,9 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt="logo"></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -54,7 +57,8 @@
                             <span class="quntity">3</span>
                         </div>
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search here..." aria-label="Search">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search here..."
+                                aria-label="Search">
                             <span class="fa fa-search"></span>
                         </form>
                     </div>
@@ -63,37 +67,38 @@
         </div>
     </header>
 
-<div class="container">
-    <form>
-        <div class="form-group">
-          <label for="bookTitleInput">Book Title</label>
-          <input type="text" class="form-control" id="bookTitleInput" placeholder="Title">
-        </div>
-        
-    
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="bookTitleInput">Book Title</label>
+                <input type="text" class="form-control" id="bookTitleInput" placeholder="Title">
+            </div>
 
 
-        <div class="form-group">
-            <label for="imgfile">Img file</label>
-            <input type="file" name="img" class="form-control-file" id="imgfile" multiple accept="image/x-png,image/gif,image/jpeg">
-          </div>
-          <div class="form-group">
-            <label for="pdfFile">Pdf file</label>
-            <input type="file" name="pdfFile" class="form-control-file" id="pdfFile" accept="application/pdf">
-          </div>
-
-          <div class="form-group">
-            <label for="bookDescriptionInput">Descreption</label>
-          <textarea id="bookDetails" name="bookDetails">Hello, World!</textarea>
-        </div>
-          <button class="btn btn-success mt-3" id="bookSaveBtn">save</button>
-            
-      </form>
-
-</div>
 
 
-   <!--  
+            <div class="form-group">
+                <label for="imgfile">Img file</label>
+                <input type="file" name="img" class="form-control-file" id="imgfile" multiple
+                    accept="image/x-png,image/gif,image/jpeg">
+            </div>
+            <div class="form-group">
+                <label for="pdfFile">Pdf file</label>
+                <input type="file" name="pdfFile" class="form-control-file" id="pdfFile" accept="application/pdf">
+            </div>
+
+            <div class="form-group">
+                <label for="bookDescriptionInput">Descreption</label>
+                <textarea id="bookDetails" name="bookDetails">Hello, World!</textarea>
+            </div>
+            <button class="btn btn-success mt-3" id="bookSaveBtn">save</button>
+
+        </form>
+
+    </div>
+
+
+    <!--  
     <section class="slider">
         <div class="container">
             <div id="owl-demo" class="owl-carousel owl-theme">
@@ -149,7 +154,7 @@
         </div>
     </section>
  -->
-   <!--  <section class="recomended-sec">
+    <!--  <section class="recomended-sec">
         <div class="container">
             <div class="title">
                 <h2>highly recommendes books</h2>
@@ -208,7 +213,7 @@
             </div>
         </div>
     </section> -->
-  <!--   <section class="about-sec">
+    <!--   <section class="about-sec">
         <div class="about-img">
             <figure style="background:url(./images/about-img.jpg)no-repeat;"></figure>
         </div>
@@ -222,7 +227,7 @@
             </div>
         </div>
     </section> -->
-<!--     <section class="recent-book-sec">
+    <!--     <section class="recent-book-sec">
         <div class="container">
             <div class="title">
                 <h2>highly recommendes books</h2>
@@ -305,7 +310,7 @@
             </div>
         </div>
     </section> -->
-<!--     <section class="features-sec">
+    <!--     <section class="features-sec">
         <div class="container">
             <ul>
                 <li>
@@ -404,7 +409,7 @@
                     <div class="address">
                         <h4>Our Address</h4>
                         <h6>The BookStore Theme, 4th Store
-                        Beside that building, USA</h6>
+                            Beside that building, USA</h6>
                         <h6>Call : 800 1234 5678</h6>
                         <h6>Email : info@bookstore.com</h6>
                     </div>
@@ -438,7 +443,7 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount 
+                        <h6>We are now offering some good discount
                             on selected books go and shop them</h6>
                         <form>
                             <div class="row">
@@ -479,68 +484,113 @@
             </div>
         </div>
     </footer>
-<%- include('./partials/htmlJs')%>
-<script src="/tinymce/tinymce.min.js"></script>
-<script>
-         tinymce.init({
-          selector: '#bookDetails',
-          /* theme of the editor */
-        //   theme: "mobile", for responsive
-	theme: "silver",
-	skin: "oxide-dark", 
-	
-	/* width and height of the editor */
-	width: "100%",
-	height: 300,
-	
-	/* display statusbar */
-	statubar: true,
-	
-	/* plugin */
-	plugins: [
-		"advlist autolink link image lists charmap print preview hr anchor pagebreak",
-		"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-		"save table contextmenu directionality emoticons template paste textcolor"
-	],
+    <%- include('./partials/htmlJs')%>
+    <script src="/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#bookDetails',
+            /* theme of the editor */
+            //   theme: "mobile", for responsive
+            theme: "silver",
+            skin: "oxide-dark",
 
-	/* toolbar */
-	toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
-	
-	/* style */
-	style_formats: [
-		{title: "Headers", items: [
-			{title: "Header 1", format: "h1"},
-			{title: "Header 2", format: "h2"},
-			{title: "Header 3", format: "h3"},
-			{title: "Header 4", format: "h4"},
-			{title: "Header 5", format: "h5"},
-			{title: "Header 6", format: "h6"}
-		]},
-		{title: "Inline", items: [
-			{title: "Bold", icon: "bold", format: "bold"},
-			{title: "Italic", icon: "italic", format: "italic"},
-			{title: "Underline", icon: "underline", format: "underline"},
-			{title: "Strikethrough", icon: "strikethrough", format: "strikethrough"},
-			{title: "Superscript", icon: "superscript", format: "superscript"},
-			{title: "Subscript", icon: "subscript", format: "subscript"},
-			{title: "Code", icon: "code", format: "code"}
-		]},
-		{title: "Blocks", items: [
-			{title: "Paragraph", format: "p"},
-			{title: "Blockquote", format: "blockquote"},
-			{title: "Div", format: "div"},
-			{title: "Pre", format: "pre"}
-		]},
-		{title: "Alignment", items: [
-			{title: "Left", icon: "alignleft", format: "alignleft"},
-			{title: "Center", icon: "aligncenter", format: "aligncenter"},
-			{title: "Right", icon: "alignright", format: "alignright"},
-			{title: "Justify", icon: "alignjustify", format: "alignjustify"}
-		]}
-	]
+            /* width and height of the editor */
+            width: "100%",
+            height: 300,
+
+            /* display statusbar */
+            statubar: true,
+
+            /* plugin */
+            plugins: [
+                "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                "save table contextmenu directionality emoticons template paste textcolor"
+            ],
+
+            /* toolbar */
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
+
+            /* style */
+            style_formats: [
+                {
+                    title: "Headers", items: [
+                        { title: "Header 1", format: "h1" },
+                        { title: "Header 2", format: "h2" },
+                        { title: "Header 3", format: "h3" },
+                        { title: "Header 4", format: "h4" },
+                        { title: "Header 5", format: "h5" },
+                        { title: "Header 6", format: "h6" }
+                    ]
+                },
+                {
+                    title: "Inline", items: [
+                        { title: "Bold", icon: "bold", format: "bold" },
+                        { title: "Italic", icon: "italic", format: "italic" },
+                        { title: "Underline", icon: "underline", format: "underline" },
+                        { title: "Strikethrough", icon: "strikethrough", format: "strikethrough" },
+                        { title: "Superscript", icon: "superscript", format: "superscript" },
+                        { title: "Subscript", icon: "subscript", format: "subscript" },
+                        { title: "Code", icon: "code", format: "code" }
+                    ]
+                },
+                {
+                    title: "Blocks", items: [
+                        { title: "Paragraph", format: "p" },
+                        { title: "Blockquote", format: "blockquote" },
+                        { title: "Div", format: "div" },
+                        { title: "Pre", format: "pre" }
+                    ]
+                },
+                {
+                    title: "Alignment", items: [
+                        { title: "Left", icon: "alignleft", format: "alignleft" },
+                        { title: "Center", icon: "aligncenter", format: "aligncenter" },
+                        { title: "Right", icon: "alignright", format: "alignright" },
+                        { title: "Justify", icon: "alignjustify", format: "alignjustify" }
+                    ]
+                }
+            ]
         });
+        //==================================
 
-</script>
+
+        document.querySelector('#bookSaveBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            const bookTitle = document.querySelector('#bookTitleInput').value
+            const bookDedcription = tinymce.get("bookDetails").getContent();
+            const imgFile = document.querySelector('#imgfile').files
+            const pdfFile = document.querySelector('#pdfFile').files[0]
+            console.log(bookTitleInput, bookDedcription, imgFile, pdfFile);
+            //===========send data to serverside
+
+            const fd = new FormData();
+            fd.append('bookTitle', bookTitle)
+            fd.append('bookDescription', bookDedcription)
+            for (let i = 0; i < imgFile.length; i++) {
+                fd.append('imgFile' + i, imgFile[i])
+            }
+            fd.append('pdfFile', pdfFile)
+            ////////////////////////////////// fetch ohne function
+           fetch('/admin/addBook', {
+                method: 'POST',
+                body: fd
+            }).then(response => response)  
+            ///////////////////////////////////////////
+            //1 send fd to server side using fetch inside  function 
+    /*        function postData_FormData(url = '', formdata = {}) {
+                fetch(url, {
+                    method: 'POST',
+                    body: formdata
+                }).then(response => response)
+            }
+             //1 call func 
+            postData_FormData('/admin/addBook', fd).then(response => response)  */
+                
+
+           
+        })
+    </script>
 </body>
 
 </html>
