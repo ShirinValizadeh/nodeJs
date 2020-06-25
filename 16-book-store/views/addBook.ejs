@@ -68,7 +68,7 @@
     </header>
 
     <div class="container">
-        <form>
+        <form id="formaddBook">
             <div class="form-group">
                 <label for="bookTitleInput">Book Title</label>
                 <input type="text" class="form-control" id="bookTitleInput" placeholder="Title">
@@ -484,6 +484,25 @@
             </div>
         </div>
     </footer>
+    <!-- modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="resultModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <%- include('./partials/htmlJs')%>
     <script src="/tinymce/tinymce.min.js"></script>
     <script>
@@ -572,25 +591,65 @@
             }
             fd.append('pdfFile', pdfFile)
             ////////////////////////////////// fetch ohne function
-           fetch('/admin/addBook', {
+            fetch('/admin/addBook', {
                 method: 'POST',
                 body: fd
-            }).then(response => response)  
-            ///////////////////////////////////////////
-            //1 send fd to server side using fetch inside  function 
-    /*        function postData_FormData(url = '', formdata = {}) {
-                fetch(url, {
-                    method: 'POST',
-                    body: formdata
-                }).then(response => response)
-            }
-             //1 call func 
-            postData_FormData('/admin/addBook', fd).then(response => response)  */
-                
+            }).then(response => {
+                //return response to json than it will return promis (then-catch)
+                if (response.status == 200) {
+                    response.json().then(data => {
 
-           
+                        switch (data) {
+                            case 1:
+                                showModal(false, "success", "the book is saved ...")
+                                 //--- clear content
+                         /*       document.querySelector('#bookTitleInput').value = ''
+                                tinymce.get("bookDetails").setContent('');
+                                document.querySelector('#imgfile').value = ''
+                                document.querySelector('#pdfFile').value = ''  */
+                                  //--- clear content or  
+                                  document.querySelector('#formaddBook').reset() 
+                                break;
+                            case 2:
+                                showModal(true, "faild", "some entries is missing")
+                                break;
+                                case 3:
+                                showModal(true, "faild", "book is exist")
+                                break;
+
+                            default:
+                                showModal(true, "server error", "pls contact server admin")
+                                break;
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                        showModal(true, "catch error (server side)", "please contact admin")
+                    })
+                }else{
+                    showModal(true , "error" , "could not send data try again")
+                }
+            }).catch(error => {
+                console.log(error);
+                //1  this error wenn is problem by response.json()
+                showModal(true, "catch error (server side)", "pls contact ")
+            })
+
         })
+
+
+        ///////////////////// fetch function//////////////////////
+                //1 send fd to server side using fetch inside  function 
+                /*        function postData_FormData(url = '', formdata = {}) {
+                            fetch(url, {
+                                method: 'POST',
+                                body: formdata
+                            }).then(response => response)
+                        }
+                         //1 call func 
+                        postData_FormData('/admin/addBook', fd).then(response => response)  */
     </script>
 </body>
 
 </html>
+
+

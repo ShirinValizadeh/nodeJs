@@ -12,6 +12,9 @@ const adminRouter = require('./routes/adminRouter')
 //creat session object options
 const sessionOptions = {
     secret : 'bookStore',
+    //resave: false,  for debuger
+    //saveUninitialized: true,
+    //cookie: { secure: true } 
     cookie :{}   
   }
  
@@ -70,6 +73,14 @@ app.post('/register', (req, res) => {
     }
 });
 
+
+//*==========================shop rout
+app.get('/shop', (req, res) => {
+    dataModules.getAllBooks().then(books =>{  //call func from dataModule line 93
+        res.render('shop',{books} )
+    })
+    
+ });
 
 
 

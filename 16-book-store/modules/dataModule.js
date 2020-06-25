@@ -36,10 +36,20 @@ function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
 
 
   return new Promise ((resolve,reject)=>{
-    // array will contain the url of imges to be save in the books.json
+    //check if book title is not exist if exist res.json(3)
+
+    //read books.json
+    const booksJson =fs.readFileSync('./books.json' )
+    //convert them
+    const booksObj = JSON.parse(booksJson)
+   const validBook = booksObj.books.find(book =>book.title == bookTitle && book.userId == 1)
+   if (validBook) {
+      reject(3)
+   }else{
+         // array will contain the url of imges to be save in the books.json
     const imgArr = []
     bookImg.forEach((img , idx) => {
-      let ext = img.name.substr(img.name.lastIndexOf('.'))
+      let ext = img.name.substr(img.name.lastIndexOf('.'))  //.jpg
       // set new img name without space
       let newName = bookTitle.trim().replace(/ /g, '_' )+ '_'+ 1+ '_' + idx + ext
       img.mv('./public/uploadedFiles/' + newName)
@@ -53,11 +63,8 @@ function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
     //!set the pdfUrl that gonna be saved in the json file
     let pdfNewUrl = '/uploadedFiles/' + pdfName
 
-    //read books.json
-    const booksJson =fs.readFileSync('./books.json' )
-    //convert them
-    const booksObj = JSON.parse(booksJson)
-    //set them 
+
+    //push them in books.json
     booksObj.books.push({
       id:booksObj.newid,
       title: bookTitle.trim(),
@@ -69,8 +76,10 @@ function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
     //increase the newId 
     booksObj.newid ++
     //save the booksObj to books.json
-    fs.writeFileSync('./books.json' , JSON.stringify(booksObj))
+    fs.writeFileSync('./books.json' , JSON.stringify(booksObj)) //!
     resolve()
+   }
+
   })
 
 
@@ -81,4 +90,14 @@ function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
 
 
 
-  module.exports = {registerUser,addBook}
+function getAllBooks() {
+  return new Promise((resolve , reject) =>{
+    const booksJson = fs.readFileSync('./books.json')
+    // convert to obj
+    const booksObject = JSON.parse(booksJson)
+    //export obj using resolve 
+    resolve(booksObject.books)
+  })
+}
+
+  module.exports = {registerUser,addBook , getAllBooks}
