@@ -6,7 +6,7 @@ const session = require('express-session')
 const cookie = require('cookie-parser')
 const dataModules = require('./modules/dataModule')
 const adminRouter = require('./routes/adminRouter')
-
+const auth = require('./routes/auth')
 
 
 //creat session object options
@@ -30,12 +30,33 @@ app.use(express.json())  //! check if req is a json will convert to obj  wenn({e
   //add the usage of any router all after others middeleware
   //app.use(bla()) >> is middleware
 app.use('/admin',adminRouter)
-
+app.use('/auth' , auth)
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
-
-
+app.get('/admin' , (req,res) =>{
+    res.render('admin')
+})
+//=========calling auth 
+//=================login===============
+/* app.get('/auth', (req, res) => {
+    //!check cookie is save inside browser(req)
+    console.log(req.cookies);
+    if (req.cookies.burgerUser) {
+    const userJsonText = fs.readFileSync(__dirname + '/users.json');  
+    const users = JSON.parse(userJsonText) 
+    const foundUser = users.find(user => user.username == req.cookies.burgerUser.username && user.pass == req.cookies.burgerUser.pass)
+      if (foundUser) {
+        req.session.user = foundUser
+        res.redirect('/admin')
+      }else{
+        res.render('login')
+      }
+    }else{
+      res.render('login')
+    }
+  
+  }); */
 //*================== render main file 
 app.get('/', (req, res) => {   
     res.render('main')
@@ -82,6 +103,21 @@ app.get('/shop', (req, res) => {
     
  });
 
+
+
+
+app.get('/book/:booktitle/:id', (req, res) => {
+   //res.send(req.params.id);
+
+dataModules.getBook(req.params.id).then(book =>{
+    res.render('book' , {book})
+}).catch( error =>{
+    res.send('404 , book could not be open');
+})
+
+
+   // res.render('productSingle')
+});
 
 
  app.listen(3000, () => {

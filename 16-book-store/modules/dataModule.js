@@ -100,4 +100,40 @@ function getAllBooks() {
   })
 }
 
-  module.exports = {registerUser,addBook , getAllBooks}
+
+//==========
+function getBook(id) {
+  return new Promise ((resolve,reject) =>{
+    const booksJson = fs.readFileSync('./books.json')
+    const blabookObject = JSON.parse(booksJson)
+    //find a book with id
+    const foundBook = blabookObject.books.find(book => book.id == id)
+    if (foundBook){
+      resolve(foundBook)
+    }else{
+      reject(new Error('can not find book with this id : ' + id))
+    }
+  })
+}
+
+function checkUser() {
+  return new Promise ((resolve,reject) =>{
+    const readData = fs.readFileSync('./users.json')
+    //convert to object
+    const data = JSON.parse(readData)
+    if (data) {
+      let user = {}
+      data.users.forEach(u =>{
+        if (u.email === userName && u.password == password) {
+          user = u
+        }
+      })
+      
+    }
+        resolve()
+   
+  
+  })
+}
+
+  module.exports = {registerUser,addBook , getAllBooks , getBook , checkUser}
