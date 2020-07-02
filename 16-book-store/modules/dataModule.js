@@ -1,5 +1,5 @@
 const fs = require('fs');  //1
-
+const passwordHash = require('password-hash')
 
 function registerUser(email,password) {
     //use promis 
@@ -17,7 +17,8 @@ function registerUser(email,password) {
         data.users.push({
           id:data.newId ,
           email: email,
-          password:password
+         // password:password,
+          password:passwordHash.generate(password)  // it will not show password
         })
         //increase the newId property for data for next registerd user
         data.newId++
@@ -33,7 +34,6 @@ function registerUser(email,password) {
 
 
 function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
-
 
   return new Promise ((resolve,reject)=>{
     //check if book title is not exist if exist res.json(3)
@@ -82,10 +82,6 @@ function addBook(bookTitle, bookDescription , bookPdf , bookImg ) {
 
   })
 
-
-
-
-
 }
 
 
@@ -116,24 +112,22 @@ function getBook(id) {
   })
 }
 
-function checkUser() {
-  return new Promise ((resolve,reject) =>{
-    const readData = fs.readFileSync('./users.json')
-    //convert to object
-    const data = JSON.parse(readData)
-    if (data) {
-      let user = {}
-      data.users.forEach(u =>{
-        if (u.email === userName && u.password == password) {
-          user = u
-        }
-      })
-      
-    }
-        resolve()
-   
-  
-  })
+//====================
+function checkUser(email , password) {
+    return new Promise((resolve , reject)=>{
+      const usersJson = fs.readFileSync('./users.json')
+      const usersObj = JSON.parse(usersJson)
+      const matchUser = usersObj.users.find(user => user.email == email )
+      if (matchUser) {
+          if (passwordHash.verify(password , matchUser.password)) {  //!!====
+            resolve(matchUser)
+          }else{
+            reject(3)
+          }
+      }else{
+          reject(3)
+      }
+    })
 }
 
   module.exports = {registerUser,addBook , getAllBooks , getBook , checkUser}

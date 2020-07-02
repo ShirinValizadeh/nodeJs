@@ -1,19 +1,20 @@
 const express = require('express');
-const dataModule = require('../modules/dataModule')
+const dataModule = require('../modules/mongodgDatamodule')
 const adminRouter = express.Router()
+
 
 adminRouter.use((req , res,next)=> {
     if (req.session.user) {//!  login to admin muss be login first
         next()
     }else{
-        res.redirect('/')
+        res.redirect('/login')
     }
-})
+}) 
 
 //!-------with admin we writing here 
 
-adminRouter.get('/admin' , (req,res) =>{
-    console.log(req.session.user); 
+adminRouter.get('/' , (req,res) =>{
+  //  console.log(req.session.user); 
 
    res.render('admin')
 })
@@ -53,7 +54,7 @@ adminRouter.post('/addBook', (req, res) => {
 
                 }
             }
-            dataModule.addBook(bookTitle, bookDescreption, bookPdf, imgs).then(() => {
+            dataModule.addBook(bookTitle, bookDescreption, bookPdf, imgs , req.session.user._id).then(() => {
                 res.json(1)
             }).catch(error =>{if (error == 3) {
                 res.json(3)

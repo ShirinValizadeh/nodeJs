@@ -106,8 +106,12 @@
                     <!--=================== show description =============================-->
                         <%- book.description%>
                     <div class="btn-sec">
-                          <!--=================== show PDF =============================-->
+                        <% if (checkLogin) { %>
+                         <!--=====wenn you are login than you can download pdf===== show PDF =======-->
                         <a href="<%= book.pdfUrl%>" target="_blank" class="btn ">download  PDF</a>
+                       <% } else {%>
+                        <a href="/login" class="btn btn-success"> login for download</a>
+              <%}%>
                         <!-- <button class="btn black">Buy Now</button> -->
                     </div>
                 </div>
