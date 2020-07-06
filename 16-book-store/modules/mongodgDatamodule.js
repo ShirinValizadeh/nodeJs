@@ -107,18 +107,18 @@ function addBook(bookTitle, bookDescription, bookPdf, bookImg, bookId) {
                         description: bookDescription,
                         pdfUrl: pdfNewUrl,
                         imgs: imgArr,
-                        userId : bookId
-                    }).then(response=>{
+                        userId: bookId
+                    }).then(response => {
                         client.close()
                         if (response.result.ok) {
                             resolve()
-                        }else{
-                            reject(new Error ('can not insert the book'))
+                        } else {
+                            reject(new Error('can not insert the book'))
                         }
-                    }).catch(error =>{
+                    }).catch(error => {
                         reject(error)
                     })
-            
+
                 }
             }).catch(error => {
                 client.close() //!
@@ -131,4 +131,90 @@ function addBook(bookTitle, bookDescription, bookPdf, bookImg, bookId) {
 
 }
 
-module.exports = { registerUser, checkUser, addBook }
+
+function getAllBooks() {
+    return new Promise((resolve, reject) => {
+        connect().then(client => {
+
+            const db = client.db('test1')
+            db.collection('book').find().toArray().then(findBooks => {
+
+
+                findBooks.forEach(book => {
+                    book['id'] = book['_id']// convert _id to id
+                })
+                client.close()
+                resolve(findBooks)
+
+
+            }).catch(error => {
+                client.close()
+                reject(error)
+            })
+
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
+
+
+
+
+function getBook(id) {
+    return new Promise ((resolve,reject) =>{ 
+        connect().then(client =>{
+            try {
+                
+        
+            const db = client.db('test1')
+            db.collection('book').findOne({_id :new ObjectID(id)}).then(book =>{
+                client.close()
+                if (book) {
+                 book.id = book._id  // convert it to id
+                    resolve(book)
+                }else{
+                    reject(new Error('can not find book with this id : ' + id))
+                }
+            }).catch(error =>{
+                client.close()
+                reject(error)
+            })
+
+                } catch (error) {
+                reject(error)
+            }
+        }).catch(error =>{
+            reject(error)
+        })
+    })
+}
+
+
+function userBooks(userId) {
+    return new Promise((resolve, reject) => {
+        connect().then(client => {
+
+            const db = client.db('test1')
+            db.collection('book').find({userId : userId}).toArray().then(findBooks => {
+
+
+                findBooks.forEach(book => {
+                    book['id'] = book['_id']  // convert _id to id
+                })
+                client.close()
+                resolve(findBooks)
+
+
+            }).catch(error => {
+                client.close()
+                reject(error)
+            })
+
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
+
+module.exports = { registerUser, checkUser, addBook, getAllBooks ,getBook ,userBooks }

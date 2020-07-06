@@ -14,9 +14,9 @@ adminRouter.use((req , res,next)=> {
 //!-------with admin we writing here 
 
 adminRouter.get('/' , (req,res) =>{
-  //  console.log(req.session.user); 
+   // console.log(req.session.user); 
 
-   res.render('admin')
+   res.render('admin' , {email: req.session.user.email}) // session will remember email line 78 admin.ejs
 })
 
 
@@ -26,9 +26,7 @@ adminRouter.get('/' , (req,res) =>{
 
 // ----------- /admin/adBook 
 adminRouter.get('/addbook', (req, res) => {
-    res.render('addBook')
-      
- 
+    res.render('addBook') 
 })
 
 
@@ -69,5 +67,22 @@ adminRouter.post('/addBook', (req, res) => {
 
 })
 
+
+
+adminRouter.get('/mybooks' , (req,res)=>{
+    dataModule.userBooks(req.session.user._id).then(books => {  // find _id from session 
+        res.render('mybooks', {books})
+      }).catch(error =>{
+          console.log(error);
+          
+      })
+})
+
+
+
+adminRouter.get('/logout' , (req,res)=>{
+    req.session.destroy()
+    res.redirect('/login')
+})
 //get data proceccing adn send to json
 module.exports = adminRouter;
