@@ -84,5 +84,31 @@ adminRouter.get('/logout' , (req,res)=>{
     req.session.destroy()
     res.redirect('/login')
 })
+
+
+// call function getBook() from mongodgDatamodule
+adminRouter.get('/mybook/:id' , (req,res)=>{
+    const bookid = req.params.id  // get bookid
+    dataModule.getBook(bookid).then(book =>{
+        if (book) {
+            res.render('editbook' , {book})
+        }else{
+            reject('error')
+        }
+    }).catch(error =>{
+        res.send('404');
+    })
+})
+
+adminRouter.post('/editbook' , (req,res)=>{
+    //const oldImgsUrl = req.body.oldImgsUrl     or
+    const{ newBookTitle , oldImgsUrl ,bookDedcription  }= req.body
+    console.log(newBookTitle , oldImgsUrl ,bookDedcription );  
+    console.log(req.files);  // to see new imgs
+    
+    res.json(1)
+    
+
+})
 //get data proceccing adn send to json
 module.exports = adminRouter;

@@ -116,7 +116,7 @@ app.get('/shop', (req, res) => {
 
 
 
-app.get('/book/:booktitle/:id', (req, res) => {
+app.get('/mybook/:id', (req, res) => {
   //res.send(req.params.id);
 
   dataModules.getBook(req.params.id).then(book => {
