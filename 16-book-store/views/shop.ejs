@@ -133,7 +133,7 @@
                             <img class="bookimages" src="<%= book.imgs[0]%>" alt="img">
                             <!-- we need to kill space  -->
                             <h3><a href="/book/<%= book.title.trim().replace(/ /g , '_')%>/<%= book.id%>"><%= book.title%></a></h3>
-                            <h6>/ <a href="/book/<%= book.title.trim().replace(/ /g , '_')%>/<%= book.id%>">download</a></h6>
+                            <h6><a href="/book/<%= book.title.trim().replace(/ /g , '_')%>/<%= book.id%>">download</a></h6>
                         </div>
                     </div>
                      <%})%>

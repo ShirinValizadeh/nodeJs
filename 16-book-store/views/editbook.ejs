@@ -401,9 +401,11 @@
                 showModal(true, 'pdf error', 'you need either to upload pdf file or leave the old one')
                 return
             }
-            //=============================append 
-            //  send to server side 
-            const fd = new FormData;
+            //=====================make body========append 
+            //1.1  send to server side 
+            const fd = new FormData();
+            //add book id to fd
+            fd.append('bookid' , '<%= book.id%>')
             fd.append('newBookTitle', bookTitle)
             // collect old imgs urls
             const oldImgArr = []
@@ -414,33 +416,36 @@
             fd.append('oldImgsUrl', JSON.stringify(oldImgArr))
 
             //add new Imgs 
-            for (let i = 0; i < newBookImg.length; i++) {
-                
+            for (let i = 0; i < newBookImg.length; i++) {               
                  fd.append('bookImg' + i,newBookImg[i] )
             }
          
-         
-            
-
             // add the upload pdf file to fd if exist
             if (pdfFile.length) {
                 fd.append('pdfFile', pdfFile)
             }
             // book description
             fd.append('bookDedcription', tinymce.get("bookDetails").getContent())
-
             postData_FormData('/admin/editbook', fd)
         })
 
 
-
+            //1.2  send to server side  using fetch
         function postData_FormData(url = '', formdata = {}) {
             fetch(url, {
                 method: 'POST',
                 body: formdata
             }).then(response => {
                 if (response.status == 200) {
-
+                    response.json().then(data =>{
+                        if (data === 1) {
+                            showModal(false, ' success' , 'your book updated')
+                        }else{
+                            showModal(true , ' errorrr' , ' in not update')
+                        }
+                    }).catch(error=>{
+                        showModal(true , ' errorrr' , ' in not update')
+                    })
                 } else {
                     showModal(true, "error", "could not send data try again")
                 }

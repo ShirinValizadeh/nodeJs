@@ -102,12 +102,37 @@ adminRouter.get('/mybook/:id' , (req,res)=>{
 
 adminRouter.post('/editbook' , (req,res)=>{
     //const oldImgsUrl = req.body.oldImgsUrl     or
-    const{ newBookTitle , oldImgsUrl ,bookDedcription  }= req.body
-    console.log(newBookTitle , oldImgsUrl ,bookDedcription );  
-    console.log(req.files);  // to see new imgs
-    
-    res.json(1)
-    
+    const{ newBookTitle , oldImgsUrl ,bookDedcription , bookid }= req.body
+   // console.log(newBookTitle , oldImgsUrl ,bookDedcription ,bookid);  
+    //console.log(req.files);  // to see new imgs    
+   //get old book than update it
+   let newPdfBook = null;
+   let newImgs = [];
+   if (req.files) {
+        newPdfBook = req.files.pdfFile   //
+      // check if file is img push in imgarr  
+    for (const key in req.files) {
+        if (req.files[key].mimetype != 'application/pdf') { 
+            newImgs.push(req.files[key])
+
+        }
+    }
+   }
+   let oldImgsUrlArr = JSON.parse(oldImgsUrl)
+   //delete the domain from the imgs urls  //http://localhost:3000/
+   oldImgsUrlArr = oldImgsUrlArr.map(element =>{
+      return  element = element.substr(element.indexOf('/uploadedFiles/'))
+    })
+   //console.log(oldImgsUrlArr);
+   
+    dataModule.updateBook(bookid ,newBookTitle, oldImgsUrlArr ,bookDedcription , newPdfBook , newImgs , req.session.user._id).then(()=>{
+
+        res.json(1)
+
+   }).catch(error =>{
+    res.json(2)
+   })
+     
 
 })
 //get data proceccing adn send to json
