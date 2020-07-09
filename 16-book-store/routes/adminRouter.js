@@ -134,6 +134,19 @@ adminRouter.post('/editbook' , (req,res)=>{
    })
      
 
+
 })
+
+adminRouter.post('/deletBook' , (req,res)=>{  //! 6 
+    //! 6.2   to be sure this bookid is for the same user  >>req.body.user._id
+    dataModule.dltBook(req.body.bookid , req.session.user._id).then(()=>{ 
+        res.json(1)
+    }).catch(error=>{
+        res.json(2)
+    })
+})
+
+
+
 //get data proceccing adn send to json
 module.exports = adminRouter;

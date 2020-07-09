@@ -114,8 +114,6 @@ app.get('/shop', (req, res) => {
 });
 
 
-
-
 app.get('/book/:booktitle/:id', (req, res) => {
   //res.send(req.params.id);
 

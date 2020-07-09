@@ -84,7 +84,7 @@
                     <% for (let i=0 ; i<book.imgs.length ; i++) {%>
                     <div class="col-md-3">
                         <a href="#" class="deletimg">X</a>
-                        <img class="bookimg" src="<%= book.imgs[i]%>" alt="">
+                        <img class="bookimg" width="100" src="<%= book.imgs[i]%>" alt="">
                     </div>
                     <%}%>
                  </div>   
@@ -103,7 +103,8 @@
                     <label for="bookDescriptionInput">Descreption</label>
                     <textarea id="bookDetails" name="bookDetails"><%= book.description%></textarea>
                 </div>
-                <button class="btn btn-success mt-3" id="bookSaveBtn">save</button>
+                
+                <button class="btn btn-success mt-3"  id="bookSaveBtn" type='submit'>save</button>
 
         </form>
 
@@ -378,6 +379,7 @@
 
         document.querySelector('#bookSaveBtn').addEventListener('click', e => {
             e.preventDefault();
+           
             // validation  bookTitle
             const bookTitle = document.querySelector('#bookTitleInput').value.trim()
             if (!bookTitle) {
@@ -426,19 +428,31 @@
             }
             // book description
             fd.append('bookDedcription', tinymce.get("bookDetails").getContent())
+          
             postData_FormData('/admin/editbook', fd)
+
+         
+            
+          
         })
-
-
+     
+        
             //1.2  send to server side  using fetch
         function postData_FormData(url = '', formdata = {}) {
+           let btn1 = document.querySelector('#bookSaveBtn')
+            btnWait(btn1 , true , 'saving ... ')
+
             fetch(url, {
                 method: 'POST',
                 body: formdata
+                
             }).then(response => {
+
+            btnWait(btn1 , false , 'save')
                 if (response.status == 200) {
                     response.json().then(data =>{
                         if (data === 1) {
+                            
                             showModal(false, ' success' , 'your book updated')
                         }else{
                             showModal(true , ' errorrr' , ' in not update')
@@ -451,6 +465,8 @@
                 }
             }).catch(error => {
                 showModal(true, "error", "could not send data try again")
+                btnWait(btn1 , false , 'save')
+
             })
         }
 
