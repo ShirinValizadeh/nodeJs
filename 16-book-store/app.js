@@ -4,7 +4,7 @@ let fs = require('fs');  //1
 const fileUpload = require('express-fileupload')
 const session = require('express-session')
 const cookie = require('cookie-parser')
-const dataModules = require('./modules/mongodgDatamodule')
+const dataModules = require('./modules/mongooseDataModule')
 const adminRouter = require('./routes/adminRouter')
 //const auth = require('./routes/auth')
 
@@ -47,12 +47,11 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   //!check cookie is save inside browser(req)
-  console.log(req.body);
+ // console.log(req.body);
   if (req.body.email && req.body.password) {
     dataModules.checkUser(req.body.email.trim(), req.body.password).then(user => {
       req.session.user = user
-      console.log(user);
-      
+    //  console.log(user); 
       res.json(1)
     }).catch(error => {
       if (error == 3) {

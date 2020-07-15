@@ -49,8 +49,6 @@ function registerUser(email, password) {
 }
 
 
-
-
 function checkUser(email, password) {
     return new Promise((resolve, reject) => {
         connect().then(client => {
