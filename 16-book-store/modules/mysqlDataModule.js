@@ -1,15 +1,12 @@
 const passwordHash = require('password-hash')
 //const { MongoClient, ObjectID } = require('mongodb')
-const mongoose = require('mongoose')
-
-const connectionString = 'mongodb+srv://fbw5:123456abc@cluster0.hjd09.mongodb.net/test1?retryWrites=true&w=majority'
+const mysql = require('mysql')
 const fs = require('fs')
+const { resolve } = require('path')
 
 
-//!3 get schema object
-const { Schema } = mongoose
 //!4 creat user schema
-const userSchema = new Schema({
+/* const userSchema = new Schema({
     email: {
         type: String,
         unique: true,
@@ -19,14 +16,12 @@ const userSchema = new Schema({
         type: String,
         required: true
     }
-})
-//!5 get users modal
-const Users = mongoose.model('users', userSchema)
+}) */
 
 
 
 //! creat books schema
-const bookSchema = new Schema({
+/* const bookSchema = new Schema({
     title: {
         type: String,
         required: true
@@ -47,55 +42,75 @@ const bookSchema = new Schema({
         type: String,
         required: true
     }
-})
-//!creat books module
-const Books = mongoose.model('books', bookSchema)
+}) */
 
 
-//!1 connect mongoose
+
+//!1 connect mysql
+let con = null
 function connect() {
-    //check connection
     return new Promise((resolve, reject) => {
-        if (mongoose.connection.readyState === 1) {
-            resolve()
-        } else {
-            mongoose.connect(connectionString, {
-                useUnifiedTopology: true,
-                useCreateIndex: true,
-                useNewUrlParser: true
-            }).then(() => {
+        if (con) {
+            if (con.state === 'disconnected') {
+                con.connect(err => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve()
+                    }
+                })
+            } else {
                 resolve()
-            }).catch(error => {
-                reject(error)
+            }
+        } else {
+            con = mysql.createConnection({
+                multipleStatements:true,
+                host: 'localhost',
+                port: 3306,
+                user: 'root',
+                password: '123456',
+                database: 'fbw5_test'
+            })
+            con.connect(err => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(err)
+                }
             })
         }
     })
 }
 
-
-
-//! registerUser mongoose
-function registerUser(email, password) {
-    return new Promise((resolve, reject) => {
-        connect().then(() => {
-            //creat new user      //37 line
-            const newUser = new Users({
-                email: email,
-                password: passwordHash.generate(password)
-            })
-            //  save newuser in DB
-            newUser.save().then(response => {
-                // console.log(response);
-                resolve()
-            }).catch(error => {
-                if (error.code === 11000) {
-                    reject('exist')
-                } else {
-                    reject(error)
+function runQuery(queryString) {
+    return new Promise ((resolve , reject)=>{
+        connect().then(()=>{
+            con.query(queryString , (err , result , fields)=>{
+                if (err) {
+                    reject(err)
+                }else{
+                    resolve(result)
                 }
             })
-        }).catch(error => {
+        }).catch(error =>{
             reject(error)
+        })
+    })
+}
+
+
+//! registerUser mysql
+function registerUser(email, password) {
+    return new Promise((resolve, reject) => {
+        runQuery(`INSERT INTO users (email , password) VALUES ('${email}', '${passwordHash.generate(password)}')`).then(() => {
+            resolve()
+            
+        }).catch(error => {
+            if (error.errno === 1062) {
+                reject('exist')
+            } else {
+                reject(error)
+            }
         })
     })
 }
@@ -104,23 +119,24 @@ function registerUser(email, password) {
 
 
 
-//! checkuser mongoose
+//! checkuser mysql
 function checkUser(email, password) {
     return new Promise((resolve, reject) => {
-        connect().then(() => {
-            Users.findOne({ email: email }).then(user => {
-                if (user) {
-                    if (passwordHash.verify(password, user.password)) {
-                        resolve(user)
-                    } else {
-                        reject(3)
-                    }
+        //any result(user) from select query will be return as a ARR
+        runQuery(`SELECT * FROM users WHERE email like '${email}'`).then(user => {
+            if (user.length === 0) {
+                reject(3)
+                
+            } else {
+               if (passwordHash.verify(password, user[0].password)) {
+                   user[0]._id = user[0].id
+                   
+                    resolve(user[0])
                 } else {
                     reject(3)
                 }
-            }).catch(error => {
-                reject(error)
-            })
+            }
+
         }).catch(error => {
             reject(error)
         })
@@ -128,6 +144,7 @@ function checkUser(email, password) {
 
 
 }
+
 
 
 
@@ -137,38 +154,29 @@ function checkUser(email, password) {
 
 function addBook(bookTitle, bookDescription, bookPdf, bookImg, bookId) {
     return new Promise((resolve, reject) => {
-        connect().then(() => {
-            Books.findOne({ bookId: bookId, title: bookTitle }).then(findBook => {
-                if (findBook) {
-                    reject(3)
-                } else {
-                    const imgArr = []
-                    bookImg.forEach((img, idx) => {
-                        let ext = img.name.substr(img.name.lastIndexOf('.'))
-                        let newName = bookTitle.trim().replace(/ /g, '_') + '_' + bookId + '_' + idx + ext
-                        img.mv('./public/uploadedFiles/' + newName)
-                        imgArr.push('/uploadedFiles/' + newName)
-                    });
-                    let pdfName = bookTitle.trim().replace(/ /g, '_') + '_' + bookId + '.pdf'
+        runQuery(`SELECT * FROM books WHERE id like '${bookId}' AND WHERE title like '${bookTitle}'`).then((book) => {
+            if (book.length === 0) {
+                reject(3)
+                
+            }else{
+                const imgArr = []
+                bookImg.forEach((img, idx) => {
+                    let ext = img.name.substr(img.name.lastIndexOf('.'))
+                    let newName = bookTitle.trim().replace(/ /g, '_') + '_' + bookId + '_' + idx + ext
+                    img.mv('./public/uploadedFiles/' + newName)
+                    imgArr.push('/uploadedFiles/' + newName)
+                });
+                let pdfName = bookTitle.trim().replace(/ /g, '_') + '_' + bookId + '.pdf'
                     bookPdf.mv('./public/uploadedFiles/' + pdfName)
                     let pdfNewUrl = '/uploadedFiles/' + pdfName
-                    //creat new book
-                    const newBook = new Books({
-                        title: bookTitle,
-                        description: bookDescription,
-                        pdfUrl: pdfNewUrl,
-                        imgs: imgArr,
-                        userId: bookId
-                    })
-                    newBook.save().then(() => {
+
+                    runQuery(`INSERT INTO books (title , description , pdfUrl ,userId) VALUES ('${bookTitle}', '${bookDescription}' , '${pdfNewUrl}','${bookId}') ; INSERT INTO imgs (imgUrl , bookid) VALUES ('${imgArr}' , '${bookId}')`).then(()=>{
                         resolve()
-                    }).catch(error => {
-                        reject(error)
+                    }).catch(err=>{
+                        reject(err)
                     })
-                }
-            }).catch(err => {
-                reject(err)
-            })
+
+            } 
 
         }).catch(err => {
             reject(err)
@@ -176,18 +184,46 @@ function addBook(bookTitle, bookDescription, bookPdf, bookImg, bookId) {
     })
 }
 
+function addBook(bookTitle, bookDescription, bookPdf, bookImg, userid) {
+    return new Promise((resolve, reject) => {
+        let pdfName = bookTitle.trim().replace(/ /g, '_') + '_' + userid + '.pdf'
+        bookPdf.mv('./public/uploadedFiles/' + pdfName)
+        let pdfNewUrl = '/uploadedFiles/' + pdfName
+        runQuery(`INSERT INTO books (title , description , pdfUrl ,userId) VALUES ('${bookTitle}', '${bookDescription}' , '${pdfNewUrl}',${userid})`).then((result)=>{
+            
+            let saveImg = ''
+            bookImg.forEach((img, idx) => {
+                let ext = img.name.substr(img.name.lastIndexOf('.'))
+                let newName = bookTitle.trim().replace(/ /g, '_') + '_' + userid + '_' + idx + ext
+                img.mv('./public/uploadedFiles/' + newName)
+                const imgUrl = '/uploadedFiles/' + newName
+              saveImg += `INSERT INTO imgs (imgUrl , bookid) VALUES ('${imgUrl}' , ${result.insertId});`  //!  ;
+            });
+            runQuery(saveImg).then(()=>{
+                resolve()
+            }).catch(err=>{
+                reject(err)
+            })
+       
+        }).catch(err =>{
+            if (err.errno === 1062) {
+                reject(3)
+            }else{
+                reject(err)
+            }
+            
+        })
+    })
+}
+
+
+
+
 
 function getAllBooks() {
     return new Promise((resolve, reject) => {
-        connect().then(() => {
-            Books.find().then(findBooks => {
-                findBooks.forEach(book => {
-                    book['id'] = book['_id']// convert _id to id
-                })
-                resolve(findBooks)
-            }).catch(error => {
-                reject(error)
-            })
+        runQuery(`SELECT * FROM books `).then((result) => {
+            resolve(result)
         }).catch(error => {
             reject(error)
         })
@@ -319,11 +355,11 @@ function dltBook(bookid, userid) {
             } else {
                 reject(new Error('haking try'))
             }
-                Books.deleteOne({ _id: bookid }).then(() => {
-                    resolve()
-                }).catch(error => {
-                    reject(error)
-                })       
+            Books.deleteOne({ _id: bookid }).then(() => {
+                resolve()
+            }).catch(error => {
+                reject(error)
+            })
         }).catch(error => {
             reject(error)
         })
