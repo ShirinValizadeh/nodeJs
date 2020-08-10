@@ -16,8 +16,7 @@
                 <div class="row">
                     <div class="col-md-3"><a href="#" class="web-url">www.bookstore.com</a></div>
                     <div class="col-md-6">
-                        <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5>
-                    </div>
+                        <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5></div>
                     <div class="col-md-3">
                         <span class="ph-number">Call : 800 1234 5678</span>
                     </div>
@@ -28,18 +27,16 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html"><img src="/images/logo.png" alt="logo"></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
-                            <li class="navbar-item">
-                                <a href="index.html" class="nav-link">Home</a>
-                            </li>
                             <li class="navbar-item active">
-                                <a href="shop.html" class="nav-link">Shop</a>
+                                <a href="/" class="nav-link">Home</a>
+                            </li>
+                            <li class="navbar-item">
+                                <a href="/shop" class="nav-link">Shop</a>
                             </li>
                             <li class="navbar-item">
                                 <a href="about.html" class="nav-link">About</a>
@@ -48,7 +45,7 @@
                                 <a href="faq.html" class="nav-link">FAQ</a>
                             </li>
                             <li class="navbar-item">
-                                <a href="login.html" class="nav-link">Login</a>
+                                <a href="/login" class="nav-link">Login</a>
                             </li>
                         </ul>
                         <div class="cart my-2 my-lg-0">
@@ -57,8 +54,7 @@
                             <span class="quntity">3</span>
                         </div>
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search here..."
-                                aria-label="Search">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search here..." aria-label="Search">
                             <span class="fa fa-search"></span>
                         </form>
                     </div>
@@ -69,13 +65,64 @@
     <div class="breadcrumb">
         <div class="container">
             <a class="breadcrumb-item" href="index.html">Home</a>
-            <span class="breadcrumb-item active">Shop</span>
+              <!--=================== show title =============================-->
+            <span class="breadcrumb-item active"><%= book.title%></span>
         </div>
     </div>
-    <section class="static about-sec">
+    <section class="product-sec">
         <div class="container">
-            <h2>my Books</h2>
-            <!--        <div class="recomended-sec">
+              <!--=================== show title =============================-->
+            <h1><%= book.title%></h1>
+            <div class="row">
+                <div class="col-md-6 slider-sec">
+                    <!-- main slider carousel -->
+                    <div id="myCarousel" class="carousel slide">
+                        <!-- main slider carousel items -->
+                        <div class="carousel-inner">
+                            <!--============== show singleProducts =========================-->
+                            <% for (let i = 0; i < book.imgs.length; i++) {%>
+                            <div class="<%= (i==0 ? 'active' : '') %> item carousel-item " data-slide-number="<%=i%>">
+                                <img src="<%= book.imgs[i]%>" class="img-fluid">
+                            </div>
+                            <%}%>
+
+                        </div>
+                        <!-- main slider carousel nav controls     singleProducts-->
+                          <!--=================== show singelProduct =============================-->
+                        <ul class="carousel-indicators list-inline">
+                            <% for (let i = 0; i < book.imgs.length; i++) {%> 
+                            <li class="list-inline-item <%= (i==0 ? 'active' : '') %> ">
+                                <a id="carousel-selector-0" class="<%= (i==0 ?'selected':'')%>" data-slide-to="<%=i%>" data-target="#myCarousel">
+                                <img src="<%= book.imgs[i]%>" class="img-fluid">
+                            </a>
+                            </li>
+                            <%}%>
+                            
+                        </ul> 
+                    </div>
+                    <!--/main slider carousel-->
+                </div>
+                <div class="col-md-6 slider-content">
+                    <!--=================== show description =============================-->
+                        <%- book.description%>
+                    <div class="btn-sec">
+                        <% if (checkLogin) { %>
+                         <!--=====wenn you are login than you can download pdf===== show PDF =======-->
+                        <a href="<%= book.pdfUrl%>" target="_blank" class="btn ">download  PDF</a>
+                       <% } else {%>
+                        <a href="/login" class="btn btn-success"> login for download</a>
+              <%}%>
+                        <!-- <button class="btn black">Buy Now</button> -->
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </section>
+    <section class="related-books">
+        <div class="container">
+            <h2>You may also like these book</h2>
+            <div class="recomended-sec">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="item">
@@ -83,9 +130,7 @@
                             <h3>how to be a bwase</h3>
                             <h6><span class="price">$49</span> / <a href="#">Buy Now</a></h6>
                             <div class="hover">
-                                <a href="product-single.html">
-                            <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                            </a>
+                                <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </div>
                     </div>
@@ -96,9 +141,7 @@
                             <h6><span class="price">$19</span> / <a href="#">Buy Now</a></h6>
                             <span class="sale">Sale !</span>
                             <div class="hover">
-                                <a href="product-single.html">
-                            <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                            </a>
+                                <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </div>
                     </div>
@@ -108,9 +151,7 @@
                             <h3>7-day self publish...</h3>
                             <h6><span class="price">$49</span> / <a href="#">Buy Now</a></h6>
                             <div class="hover">
-                                <a href="product-single.html">
-                            <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                            </a>
+                                <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </div>
                     </div>
@@ -120,37 +161,12 @@
                             <h3>wendy doniger</h3>
                             <h6><span class="price">$49</span> / <a href="#">Buy Now</a></h6>
                             <div class="hover">
-                                <a href="product-single.html">
-                                    <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
-                                    </a>
+                                <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> -->
-            <h2>recently added books to our store</h2>
-            <div class="recent-book-sec">
-                <div class="row">
-                    <% books.forEach((book , idx )=> {%>
-                    <div class="col-md-3">
-                        <div class="item">
-                            <img class="bookimages" src="<%= book.imgs[0]%>" alt="img">
-                            <!-- we need to kill space  -->
-                            <h3><a href="/admin/mybook/<%= book.id%>"><%= book.title%></a></h3>
-                            <h6>
-                                <a href="/admin/mybook/<%= book.id%>">Edit</a> &nbsp;&nbsp;&nbsp;
-                                <a bookid="<%= book.id%>" href="#" class="btnDlt">Delet</a>
-
-                            </h6>
-                        </div>
-                    </div>
-                    <%})%>
-                </div>
-                <div class="btn-sec">
-                    <button class="btn gray-btn">load more books</button>
-                </div>
             </div>
-
         </div>
     </section>
     <footer>
@@ -160,7 +176,7 @@
                     <div class="address">
                         <h4>Our Address</h4>
                         <h6>The BookStore Theme, 4th Store
-                            Beside that building, USA</h6>
+                        Beside that building, USA</h6>
                         <h6>Call : 800 1234 5678</h6>
                         <h6>Email : info@bookstore.com</h6>
                     </div>
@@ -194,7 +210,7 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount
+                        <h6>We are now offering some good discount 
                             on selected books go and shop them</h6>
                         <form>
                             <div class="row">
@@ -235,102 +251,7 @@
             </div>
         </div>
     </footer>
-
-
-    <div class="modal" tabindex="-1" role="dialog" id="deletConfirmModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delet???</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>are you sure you want to delet </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="deletBookBtn" data-dismiss="modal" class="btn btn-primary">DELET</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="resultModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <%- include('./partials/htmlJs')%>
-
-
-    <script>
-        let bookid;
-        const btnDlt = document.querySelectorAll('.btnDlt')    //! 1
-        btnDlt.forEach(btn => {     //! 2
-            btn.addEventListener('click', e => {
-                e.preventDefault()
-                // or  $('#deletConfirmModal').modal('show')
-                showModalDlt(true, 'Delete', 'are you sure you want to delet, no way to bring it back ...')
-                bookid = btn.getAttribute('bookid') // line 142 get id     //!3
-                //   console.log(bookid);
-
-
-            })
-        });
-
-        document.querySelector("#deletBookBtn").addEventListener('click', (e) => {  //!4
-            e.preventDefault()
-
-            //!7 get parentElement to remove it
-            document.querySelector('a[bookid="' + bookid + '"]').parentElement.parentElement.parentElement.remove()
-            data = {   //5.2   it muss be as a object
-                bookid: bookid
-            }
-            postDtata('/admin/deletBook', data).then((data) => {  //! 5.3 call it here
-                //hide the delet confirmation modal
-                $('#deletConfirmModal').modal('hide')
-                if (data.status == 200) {
-                    if (data == 1) {
-                        showModal(false, 'okkkkkk', "book deleted")
-
-                    } else {
-                        showModal(true, 'error', "book can not be deleted")
-                    }
-                } 
-            }).catch(error => {
-                showModal(true, 'error', "errrrrrorr from server")
-
-            })
-        })
-
-
-
-        async function postDtata(url = "", data = "") {   //!5 send data to server 
-            const response = await fetch(url, {
-                method: "Post",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)  //5.1 
-            })
-            return response.json()
-        }
-    </script>
 </body>
 
 </html>
